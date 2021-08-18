@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Public Version - Header & Footer</title>
     <link rel="stylesheet" href="./CSS/signup.css">
-    
+
 
     <!-- bootstrap 4 link -------------------------------->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -24,8 +24,7 @@
     <!-- google font link ------------------------------->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
 
     <!-- CSS link ---------------------------->
@@ -35,42 +34,6 @@
     <link rel="stylesheet" href="CSS/3.btn_to_top.css">
 
     <script src="./js/1.header.js"></script>
-    
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
-    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script> -->
-    <!-- bootstrap 4 link -------------------------------->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script src="./js/custom.js"></script> -->
-
-    
-
-
-    <!-- google font link ------------------------------->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
- -->
-
-    <!-- CSS link ---------------------------->
-    <!-- <link rel="stylesheet" href="CSS/0.body.css">
-    <link rel="stylesheet" href="CSS/1.header.css">
-    <link rel="stylesheet" href="CSS/2.footer.css">
-    <link rel="stylesheet" href="CSS/3.btn_to_top.css"> -->
-
-
-    <!-- JS link ----------------------------------->
-  
-
-
-    <style>
-        * {
-            /* outline: 1px solid red; */
-        }
-    </style>
 
 
 </head>
@@ -161,8 +124,7 @@
                                 </defs>
                                 <g id="圖層_2" data-name="圖層 2">
                                     <g id="圖層_2-2" data-name="圖層 2">
-                                        <path class="cls-1"
-                                            d="M34,3.69c-4.13-4.13-10.83-3.25-15,.89-4.13-4.14-10.84-5-15-.89a10.59,10.59,0,0,0,0,15l15,15,15-15A10.57,10.57,0,0,0,34,3.69Z" />
+                                        <path class="cls-1" d="M34,3.69c-4.13-4.13-10.83-3.25-15,.89-4.13-4.14-10.84-5-15-.89a10.59,10.59,0,0,0,0,15l15,15,15-15A10.57,10.57,0,0,0,34,3.69Z" />
                                     </g>
                                 </g>
                             </svg>
@@ -186,8 +148,7 @@
                                 </defs>
                                 <g id="圖層_2" data-name="圖層 2">
                                     <g id="圖層_2-2" data-name="圖層 2">
-                                        <path class="cls-1"
-                                            d="M0,1H8.08A1.51,1.51,0,0,1,9.55,2.16L15.38,27a1.5,1.5,0,0,0,1.47,1.16h24A1.51,1.51,0,0,0,42.31,27L46.24,8.12A1.51,1.51,0,0,0,44.77,6.3H14.92" />
+                                        <path class="cls-1" d="M0,1H8.08A1.51,1.51,0,0,1,9.55,2.16L15.38,27a1.5,1.5,0,0,0,1.47,1.16h24A1.51,1.51,0,0,0,42.31,27L46.24,8.12A1.51,1.51,0,0,0,44.77,6.3H14.92" />
                                         <line class="cls-1" x1="24.81" y1="12.44" x2="41.63" y2="12.44" />
                                         <line class="cls-1" x1="21.04" y1="16.79" x2="41.63" y2="16.79" />
                                         <line class="cls-1" x1="31.35" y1="22.07" x2="41.57" y2="22.07" />
@@ -470,7 +431,7 @@
                 <h5>選擇大頭貼</h5>
             </div>
             <div class="r_part">
-                <form id="registered_form" method="POST" action="insertUser.php" >
+                <form id="registered_form" method="POST" action="insertUser.php">
                     <div class="form_div">
                         <div class="warn">請填入真實姓名</div>
                         <label for="user_name" id="name">
@@ -766,9 +727,6 @@
             $('.lv3-5').addClass('d-none');
             $('.lv2-5>p').css('color', '#5a5a5a');
         });
-        
-
-       
     </script>
 
 </body>
