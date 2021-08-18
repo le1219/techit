@@ -1,0 +1,142 @@
+body {
+  background-color: #fafafa;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.promotion {
+  height: 60px;
+  margin-top: 150px;
+  background-color: #fff8e2;
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  word-spacing: 10px;
+}
+.login_page {
+  width: 700px;
+  text-align: center;
+  margin: 50px auto;
+}
+.login_page > div {
+  width: 50%;
+  margin: 0px auto;
+}
+
+.login_page img {
+  width: 225px;
+  height: 225px;
+  border-radius: 50%;
+}
+/* .forgot_pw {
+  margin-left: 260px;
+} */
+.login_page button {
+  width: 150px;
+  height: 50px;
+  border-radius: 10px;
+  box-shadow: 0 5px 8px #aaaaaa;
+  border: 0px;
+  margin: 10px 10px;
+}
+.login_page a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+.signup {
+  background-color: #ffffff;
+}
+.page_footer {
+  margin: 50px 0;
+}
+.login {
+  background-color: #fa8873;
+}
+.login a {
+  color: white;
+}
+button#tool.btn.btn-secondary {
+  display: none !important;
+  cursor: none;
+  width: 300px;
+}
+
+/* 框
+.dialog {
+  border: 5px solid #5d5d71;
+  height: 65px;
+  position: relative;
+  left: 33%;
+  top: -50px;
+  width: 300px;
+  border-radius: 10px;
+  font-size: 20px;
+  line-height: 60px;
+  background-color: #5d5d71;
+  color: white;
+} */
+/* .dialog:before {
+  border-color: #5d5d71 transparent transparent;
+  border-style: solid solid solid;
+  border-width: 20px 20px 20px 20px;
+  bottom: -40px;
+  /* 必須指定，才能顯示內容 */
+/* content: "";
+  height: 0px;
+  left: 125px; */
+/* 必須指定，否則會變梯形 */
+/* position: absolute;
+  width: 0px;
+} */
+
+/* .dialog:after {
+  border-color: #5d5d71 transparent transparent;
+  border-style: solid solid solid solid;
+  border-width: 20px;
+  bottom: -33px; */
+/* 必須指定，才能顯示內容 */
+/* content: "";
+  height: 0px;
+  left: 125px;
+  /* 必須指定，否則會變梯形 */
+/* position: absolute;
+  width: 0px; */
+/* } */
+/* rwd */
+@media screen and (max-width: 500px) {
+  .promotion {
+    font-size: 14px;
+  }
+  .login_page div {
+    width: 80%;
+  }
+  .dialog {
+    left: 9%;
+    font-size: 14px;
+    width: 260px;
+    height: 50px;
+    line-height: 40px;
+  }
+  .dialog:before,
+  .dialog:after {
+    left: 100px;
+  }
+  .forgot_pw {
+    margin: 30px 0 0 100px;
+  }
+  .login_page button {
+    width: 151px;
+    height: 48px;
+    margin: 10px 10px;
+    border: 10px;
+  }
+  .login_page a {
+    font-size: 14px;
+  }
+  .page_footer {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+  }
+}
