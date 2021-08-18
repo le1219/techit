@@ -35,8 +35,6 @@
 
     <script src="./js/1.header.js"></script>
 
-    <script src="aa.js"></script>
-
 
 </head>
 
