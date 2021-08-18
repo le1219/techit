@@ -1,0 +1,140 @@
+body{
+    background-color: #FAFAFA;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+a{
+    text-decoration: none;
+    color:#7B7B7B
+}
+button{
+    cursor: pointer;
+}
+.promotion{
+    height: 100%;
+    background-color: #FFF8E2;
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    word-spacing:10px;
+    margin-top: 150px;
+}
+input[type="text"]{
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    border: 0;
+    box-shadow:inset 0px 5px 8px #A2A2A2;
+    margin-top: 15px;
+}
+form{
+    text-align: center;
+    margin-top: 20px;
+    min-height: calc(100vh - 300px);
+}
+/* placeholder img */
+#ac{
+    position: relative;
+    display: inline-block;
+}
+form img{
+    width: 15px;
+    position:absolute;
+    left: 30px;
+    top:47%
+}
+#member_ac{
+    text-indent: 60px;
+}
+#pw{
+    position: relative;
+    display: inline-block;
+}
+#member_pw{
+    text-indent: 60px;
+}
+#eye{
+    left: 470px;
+    top:50%
+}
+/* end */
+.aa{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+#remember_me{
+     font-size: 18px;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid grey;
+    margin-right: 15px;
+}
+.forgot{
+    margin: 20px;
+}
+
+/* .member_none{
+    margin-top: 30px;
+  
+} */
+.member_none a{
+    text-decoration: underline;
+    color: #FA8873;
+}
+.login{
+    width: 150px;
+    height: 50px;
+    box-shadow: 0 5px 8px #AAAAAA;
+    border: 0;
+    border-radius: 10px;
+    background-color: #FA8873;
+    font-size: 16px;
+    color:white;    
+}
+.back{
+    margin: 20px;
+    width: 140px;
+    height: 57px;
+    box-shadow: 0 5px 8px #AAAAAA;
+    border: 0;
+    border-radius: 20px;
+    background-color: #ffffff;
+}
+/* rwd */
+@media screen and (max-width:500px){
+    .promotion{
+        font-size: 14px;
+        margin-top: 100px;
+    }
+    input[type="text"]{
+        width: 348px;
+        height: 48px;
+    }
+    .login{
+        width: 203px;
+        height: 38px;
+    }
+    a{
+        font-size: 14px;
+    }
+    .aa{
+        margin: 10px;
+        font-size: 14px;
+    }
+    .back{
+        margin: 20px;
+        width: 93px;
+        height: 38px;
+        border-radius: 10px;
+    }
+    #eye{
+        left: 300px;
+        top:50%
+    }
+
+}

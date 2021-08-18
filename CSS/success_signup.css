@@ -1,0 +1,91 @@
+body {
+    background-color: #FAFAFA;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h5{
+    font-size: 16px;
+    margin: 20px!important;
+}
+
+.promotion {
+    margin-top: 120px;
+    height: 70px;
+    background-color: #FFF8E2;
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    word-spacing: 10px;
+}
+
+.go_product{
+    margin: 50px;
+    width: 150px;
+    height: 50px;
+    background-color: #FA8873;
+    border-radius: 10px;
+    box-shadow: 2px 4px 7px #9d9d9d;
+    border: 0px;
+    margin-bottom: 50px;
+    color: white;
+    margin: 10px auto;
+}
+div img {
+    border-radius: 50%;
+}
+.success_page {
+    width: 500px;
+    margin: 0px auto;
+    text-align: center;
+    margin-top: 100px;
+}
+.m_block{
+    width: 150px;
+    height: 50px;
+    background-color: #E8E8E8;
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 2px 4px 7px #9d9d9d;
+    margin: 10px auto;
+}
+
+/* rwd */
+@media screen and (min-width:500px) {
+    .m_block{
+        display: none;
+        box-shadow: 0 5px 8px #AAAAAA;
+        border: 0px;
+        margin-bottom: 50px;
+    }
+}
+@media screen and (max-width:500px) {
+    .promotion{
+        font-size: 12px;
+        margin-top: 70px;
+        height: 50px;
+    }
+    .profile{
+        display: none;
+    }
+    .success_page {
+        width: 300px;
+        margin-top: 50px;
+    }
+    p{
+        font-size: 14px;
+    }
+    button{
+        width: 203px;
+        height: 38px;
+    }
+    button a{
+        font-size: 14px;
+    }
+    .m_block{
+        display: block;
+        background-color: white;
+        
+    }
+    
+}
