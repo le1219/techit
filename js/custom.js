@@ -8,7 +8,9 @@ $(function () {
 
     $("input#birthday").datepicker({
         dateFormat: 'yy-mm-dd',
-        defaultDate: '1999-02-02'
+        defaultDate: '1999-02-02',
+        changeMonth: true,
+        changeYear: true
     });
     // $("input#birthday").datepicker( "setDate" , "2019-01-01" );
 
@@ -34,17 +36,22 @@ $(function () {
             console.log(1);
             input_pwd.addClass("border border-danger border-2")
             input_check.addClass("border border-danger border-2")
+            .tooltip({
+                title: '兩次密碼不相符',
+                placement: 'top'
+            })
         } else if (!re.test(input_email.val())) {
             //兩次密碼一樣 接著檢查email 不正確
             console.log(input_email.val());
             input_pwd.removeClass("border border-danger border-2");
             input_check.removeClass("border border-danger border-2")
+            
 
             input_email
                 .addClass("border border-danger border-5")
                 .tooltip({
                     title: '請填寫完整的 E-mail',
-                    placement: 'right'
+                    placement: 'top'
                 })
                 .tooltip('show');
         } else if (!re1.test(input_phone_number.val())) {
@@ -57,7 +64,7 @@ $(function () {
             input_phone_number.addClass("border border-danger border-5")
                 .tooltip({
                     title: '請填寫正確手機號碼',
-                    placement: 'right'
+                    placement: 'top'
                 })
                 .tooltip('show');
         }
@@ -87,6 +94,47 @@ $(function () {
             }, 'json');
         }
     });
+    
+    //登入
+  
+  
+    $('button#btn_login').click(function (event) {
+        //避免元素的預設事件被觸發
+        event.preventDefault();
+
+        //各自將 input 帶入變數中
+        let input_email = $('input#email_login');
+        let input_pwd = $('input#pwd_login');
+
+        //檢查 email 是否輸入
+        if (input_email.val() == '') {
+            alert('請輸入 E-mail');
+            return false;
+        }
+
+        //檢查 密碼 是否輸入
+        if (input_pwd.val() == '') {
+            alert('請輸入密碼');
+            return false;
+        }
+
+        //送出 post 請求，註冊帳號
+        let objUser = {
+            email_login: input_email.val(),
+            pwd_login: input_pwd.val()
+        };
+        $.post("login1.php", objUser, function (obj) {
+            if (obj['success']) {
+                
+                //成功訊息
+                alert('登入成功');
+
+                location.href = "follow.php";
+            } else {
+                alert(`${obj['info']}`);
+            }
+        }, 'json')
+    });
 
     //登出
     $('a#logout').click(function (event) {
@@ -98,7 +146,7 @@ $(function () {
                 alert('登出成功');
 
                 setTimeout(function () {
-                    location.href = 'index.php';
+                    location.href = 'login_index.php';
                 }, 1000);
             }
             console.log(obj);

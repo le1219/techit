@@ -18,7 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <!-- bootstrap 4 link -------------------------------->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script src="./JS/custom.js"></script>
+    <script src="./jS/custom.js"></script>
 
     <!-- jquery link -------------------------------------->
 
@@ -39,14 +39,6 @@
 
     <!-- JS link ----------------------------------->
     <script src="./js/1.header.js"></script>
-
-
-    <style>
-        * {
-            /* outline: 1px solid red; */
-        }
-    </style>
-
 
 </head>
 
@@ -204,18 +196,13 @@
 
                 <!-- 會員登入 / 註冊狀態 ------------------------->
                 <div class="hd_member_state">
-
-                    <a href="./login.php">登入</a>
-                    <!-- 若已登入則改成"使用者姓名" -->
-
-                    <!-- ↓↓我是可愛的中界線，不要刪掉我↓↓ -->
-                    ｜
-                    <!-- ↑↑我是可愛的中界線，不要刪掉我↑↑ -->
-
-                    <a href="./signup.php">註冊</a>
-                    <!-- 若已登入則改成"登出" -->
-
+                    <?php if (isset($_SESSION['user_name'])) { ?>
+                        <?php echo $_SESSION['user_name'] ?>｜<a href="./logout.php" id="logout" class="btn btn-link">登出</a>
+                    <?php } else { ?>
+                        <a href="./login.php">登入</a>｜<a href="./signup.php">註冊</a>
+                    <?php } ?>
                 </div>
+            </div>
 
             </div>
 
@@ -250,17 +237,11 @@
                 <a href="#"></a>
                 <div class="tog_icon_link">
                     <img class="tog_icon" src="./img/icon_member.svg" alt="">
-
-                    <div>登入</div>
-                    <!-- 若已登入則改成"使用者姓名" -->
-
-                    <!-- ↓↓我是可愛的中界線，不要刪掉我↓↓ -->
-                    ｜
-                    <!-- ↑↑我是可愛的中界線，不要刪掉我↑↑ -->
-
-                    <div>註冊</div>
-                    <!-- 若已登入則改成"登出" -->
-
+                    <?php if (isset($_SESSION['user_name'])) { ?>
+                        <?php echo $_SESSION['user_name'] ?>｜<a href="./logout.php" id="logout" class="btn btn-link">登出</a>
+                    <?php } else { ?>
+                        <a href="./login.php">登入</a>｜<a href="./signup.php">註冊</a>
+                    <?php } ?>
                 </div>
                 </a>
 
@@ -441,22 +422,21 @@
     <div class="promotion">
         夏季專屬優惠 5/10-5/20滿NT$10,000 免運費
     </div>
-
+    <h5 class="head">註冊 TECH IT 帳號</h5>
     <form method="POST" action="login1.php">
         <label for="member_ac" id="ac">
-            <img src="./LOGO_ICON/會員.svg">
-            <input type="text" id="email" name="email" placeholder="會員帳號">
+            <img src="./img/icon_member.svg">
+            <input type="text" id="email_login" name="email_login" placeholder="會員帳號">
         </label>
         <br>
         <label for="member_pw" id="pw">
-            <img src="./LOGO_ICON/密碼2.svg">
-            <input type="text" id="pwd_login" name="pwd_login" placeholder="密碼">
-            <img src="./LOGO_ICON/密碼.svg" alt="" id="eye">
+            <img src="./img/icon_password.svg">
+            <input type="password" id="pwd_login" name="pwd_login" placeholder="密碼">
         </label>
         <br>
 
         <label for="remember_me" class="aa">
-            <input type="checkbox" id="remember_me">記住我
+            <input type="checkbox" id="remember_me"><span>記住我</span>
         </label>
         <br>
 
@@ -465,9 +445,9 @@
             <a href="">忘記密碼</a> ｜ <a href="">忘記帳號</a>
         </div>
 
-        <div class="member_none">還不是會員嗎？ <a href="./signup.html" target="_self">快速註冊新帳號</a></div>
+        <div class="member_none">還不是會員嗎？ <a href="./signup.php">快速註冊新帳號</a></div>
 
-        <button class="back"><a href="./login_index.html" target="_self">回上一頁</a></button>
+        <button class="back">回上一頁</button>
     </form>
 
 
@@ -746,6 +726,10 @@
             $('.lv3-5').addClass('d-none');
             $('.lv2-5>p').css('color', '#5a5a5a');
         });
+        // this page
+        $('.back').click(function() {
+            location.href = "login_index.php";
+        })
     </script>
 
 </body>

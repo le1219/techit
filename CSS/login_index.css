@@ -108,6 +108,9 @@ button#tool.btn.btn-secondary {
   .promotion {
     font-size: 14px;
   }
+  .login_page {
+    width: 350px;
+  }
   .login_page div {
     width: 80%;
   }

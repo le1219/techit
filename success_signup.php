@@ -193,9 +193,9 @@
                 <!-- 會員登入 / 註冊狀態 ------------------------->
                 <div class="hd_member_state">
                     <?php if (isset($_SESSION['user_name'])) { ?>
-                        <?php echo $_SESSION['user_name'] ?>｜<a id="logout" class="btn btn-link">登出</a>
+                        <?php echo $_SESSION['user_name'] ?>｜<a href="./logout.php" id="logout" class="btn btn-link">登出</a>
                     <?php } else { ?>
-                        <a href="#">登入</a>｜<a href="#">註冊</a>
+                        <a href="./login.php">登入</a>｜<a href="./signup.php">註冊</a>
                     <?php } ?>
                 </div>
             </div>
@@ -229,13 +229,35 @@
             <div class="tog_icon_box">
                 <!-- 註冊 / 登入 -->
                 <a href="#"></a>
-                <div class="tog_icon_link">
-                    <img class="tog_icon" src="./img/icon_member.svg" alt="">
-                    <?php if (isset($_SESSION['user_name'])) { ?>
-                        <?php echo $_SESSION['user_name'] ?>｜<a id="logout" class="btn btn-link">登出</a>
-                    <?php } else { ?>
-                        <a href="#">登入</a>｜<a href="#">註冊</a>
-                    <?php } ?>
+                <div class="tog_icon_box">
+                    <!-- 註冊 / 登入 -->
+                    <a href="#"></a>
+                    <div class="tog_icon_link">
+                        <img class="tog_icon" src="./img/icon_member.svg" alt="">
+                        <?php if (isset($_SESSION['user_name'])) { ?>
+                            <?php echo $_SESSION['user_name'] ?>｜<a href="./logout.php" id="logout" class="btn btn-link">登出</a>
+                        <?php } else { ?>
+                            <a href="./login.php">登入</a>｜<a href="./signup.php">註冊</a>
+                        <?php } ?>
+                    </div>
+                    </a>
+
+                    <!-- 喜好清單 -->
+                    <a href="#"></a>
+                    <div class="tog_icon_link">
+                        <img class="tog_icon" src="./img/icon_saved.svg" alt="">
+                        喜好清單
+                    </div>
+                    </a>
+
+                    <!-- 比較清單 -->
+                    <a href="#"></a>
+                    <div class="tog_icon_link">
+                        <img class="tog_icon" src="./img/icon_compare-list.svg" alt="">
+                        比較清單
+                    </div>
+                    </a>
+
                 </div>
                 </a>
 

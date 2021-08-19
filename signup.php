@@ -189,18 +189,13 @@
 
                 <!-- 會員登入 / 註冊狀態 ------------------------->
                 <div class="hd_member_state">
-
-                    <a href="#">登入</a>
-                    <!-- 若已登入則改成"使用者姓名" -->
-
-                    <!-- ↓↓我是可愛的中界線，不要刪掉我↓↓ -->
-                    ｜
-                    <!-- ↑↑我是可愛的中界線，不要刪掉我↑↑ -->
-
-                    <a href="#">註冊</a>
-                    <!-- 若已登入則改成"登出" -->
-
+                    <?php if (isset($_SESSION['user_name'])) { ?>
+                        <?php echo $_SESSION['user_name'] ?>｜<a href="./logout.php" id="logout" class="btn btn-link">登出</a>
+                    <?php } else { ?>
+                        <a href="./login.php">登入</a>｜<a href="./signup.php">註冊</a>
+                    <?php } ?>
                 </div>
+            </div>
 
             </div>
 
@@ -235,17 +230,11 @@
                 <a href="#"></a>
                 <div class="tog_icon_link">
                     <img class="tog_icon" src="./img/icon_member.svg" alt="">
-
-                    <div>登入</div>
-                    <!-- 若已登入則改成"使用者姓名" -->
-
-                    <!-- ↓↓我是可愛的中界線，不要刪掉我↓↓ -->
-                    ｜
-                    <!-- ↑↑我是可愛的中界線，不要刪掉我↑↑ -->
-
-                    <div>註冊</div>
-                    <!-- 若已登入則改成"登出" -->
-
+                    <?php if (isset($_SESSION['user_name'])) { ?>
+                        <?php echo $_SESSION['user_name'] ?>｜<a href="./logout.php" id="logout" class="btn btn-link">登出</a>
+                    <?php } else { ?>
+                        <a href="./login.php">登入</a>｜<a href="./signup.php">註冊</a>
+                    <?php } ?>
                 </div>
                 </a>
 
@@ -266,7 +255,6 @@
                 </a>
 
             </div>
-
             <!-- title-link ---------------------->
             <div class="hd_title">
 
@@ -420,87 +408,85 @@
     <!-- 從這裡開始進行網頁撰寫 ------------------->
     <!-- WP : wrap -->
     <!-- ★★★ 請不要調整wrap原數值(in 0.body.css) -->
-    <div class="wrap">
 
-        <div class="promotion">
-            新註冊會員可現領100折價券，現領現用！
+
+    <div class="promotion">
+        新註冊會員可現領100折價券，現領現用！
+    </div>
+    <h5 class="head">註冊 TECH IT 帳號</h5>
+    <div class="main_part">
+        <div class="l_part">
+            <img src="https://picsum.photos/150/150" class="upload_img">
+            <h5>選擇大頭貼</h5>
         </div>
-        <div class="main_part">
-            <div class="l_part">
-                <img src="https://picsum.photos/150/150" class="upload_img">
-                <h5>選擇大頭貼</h5>
-            </div>
-            <div class="r_part">
-                <form id="registered_form" method="POST" action="insertUser.php">
-                    <div class="form_div">
-                        <div class="warn">請填入真實姓名</div>
-                        <label for="user_name" id="name">
+        <div class="r_part">
+            <form id="registered_form" method="POST" action="insertUser.php">
+                <div class="form_div">
+                    <label for="user_name" id="name">
+                        <img src="./img/icon_member.svg">
+                        <input type="text" id="user_name" placeholder="會員姓名(請填入真實姓名)" name="user_name">
 
-                            <img src="./LOGO_ICON/會員.svg" alt="">
-                            <input type="text" id="user_name" placeholder="會員姓名" name="user_name">
-
-                        </label>
-                    </div>
-
-
-                    <div class="form_div">
-                        <label for="email" id="ac">
-                            <img src="./LOGO_ICON/會員.svg" alt="">
-                            <input type="text" id="email" placeholder="會員帳號(請填入email)" name="email">
-                        </label>
-                    </div>
-                    <div class="form_div">
-                        <label for="phone_number" id="nu">
-                            <img src="./LOGO_ICON/會員.svg" alt="">
-                            <input type="text" id="phone_number" placeholder="手機號碼" name="phone_number" maxlength="10">
-                        </label>
-                    </div>
-
-
-                    <div class="form_div">
-                        <label for="birthday" id="day">
-                            <img src="./LOGO_ICON/calendar-alt-regular.svg" alt="">
-                            <input type="text" id="birthday" placeholder="出生日期" name="birthday">
-                            <img src="./LOGO_ICON//caret-down-solid.svg" alt="" id="tr">
-                        </label>
-                    </div>
-
-                    <div class="form_div">
-                        <label for="pwd" id="pw">
-                            <div class="warn">請輸入8-10字元(需含數字與英文組合)</div>
-                            <img src="./LOGO_ICON/密碼2.svg" alt="" id="pw">
-                            <input type="password" id="pwd" placeholder="密碼" name="pwd">
-                            <img src="./LOGO_ICON/密碼.svg" alt="" id="eye">
-                        </label>
-                    </div>
-
-                    <div class="form_div">
-                        <label for="check_pwd" id="pw2">
-                            <div class="warn">請再輸入一次密碼</div>
-                            <img src="./LOGO_ICON/密碼2.svg" alt="" id="pw2">
-                            <input type="password" id="check_pwd" placeholder="密碼">
-                            <img src="./LOGO_ICON/密碼.svg" alt="" id="eye">
-                        </label>
-                    </div>
-
-
-                    <label for="remember_me" class="aa">
-                        <input type="checkbox" id="remember_me">我同意網站服務條款及隱私政策
                     </label>
-                    <!-- type="submit" -->
-
-                    <button class="signup" id="btn_signup">註冊</button>
-                    <!-- <a href="./success_signup.html" target="_self">註冊</a> -->
+                </div>
 
 
-                    <!-- <div class="black" style="width: 100vw;height: 100vh;">
+                <div class="form_div">
+                    <label for="email" id="ac">
+                        <img src="./img/envelope-regular.svg" alt="">
+                        <input type="text" id="email" placeholder="會員帳號(請填入email)" name="email">
+                    </label>
+                </div>
+                <div class="form_div">
+                    <label for="phone_number" id="nu">
+                        <img src="./img/mobile-alt-solid.svg" alt="">
+                        <input type="text" id="phone_number" placeholder="手機號碼" name="phone_number" maxlength="10">
+                    </label>
+                </div>
+
+
+                <div class="form_div">
+                    <label for="birthday" id="day">
+                        <img src="./img/calendar-alt-regular.svg" alt="">
+                        <input type="text" id="birthday" placeholder="出生日期" name="birthday" readonly>
+                        <img src="./LOGO_ICON//caret-down-solid.svg" alt="" id="tr">
+                    </label>
+                </div>
+
+                <div class="form_div">
+                    <label for="pwd" id="pw">
+                        <img src="./img/icon_password.svg" alt="" id="pw">
+                        <input type="password" id="pwd" placeholder="請輸入8-10位(數字與英文組合)密碼" name="pwd">
+                        <img src="./LOGO_ICON/密碼.svg" alt="" id="eye">
+                    </label>
+                </div>
+
+                <div class="form_div">
+                    <label for="check_pwd" id="pw2">
+                        <img src="./img/icon_password.svg" id="pw2">
+                        <input type="password" id="check_pwd" placeholder="請再輸入一次密碼">
+                        <img src="./LOGO_ICON/密碼.svg" alt="" id="eye">
+                    </label>
+                </div>
+
+
+                <label for="remember_me" class="aa">
+                    <input type="checkbox" id="remember_me"><span>我同意網站服務條款及隱私政策</span>
+
+                </label>
+                <!-- type="submit" -->
+
+                <button class="signup" id="btn_signup">註冊</button>
+                <!-- <a href="./success_signup.html" target="_self">註冊</a> -->
+
+
+                <!-- <div class="black" style="width: 100vw;height: 100vh;">
                         <div class="white"></div>
                     </div> -->
 
-                    </ul>
-                </form>
-            </div>
+                </ul>
+            </form>
         </div>
+    </div>
 
     </div>
     <!-- 在這裡結束網頁撰寫 ----------------------->
