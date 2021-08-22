@@ -447,7 +447,7 @@
                 Tech it的會員，<br>
                 現在，就開始來一場愉快的購物旅程吧！</p>
             <button class="go_product">前往商品列表</button>
-            <button class="m_block">請選擇大頭貼</button>
+
         </div>
     </div>
     <!-- ↑↑↑ 測試區域可刪 ↑↑↑ -->

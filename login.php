@@ -422,7 +422,7 @@
     <div class="promotion">
         夏季專屬優惠 5/10-5/20滿NT$10,000 免運費
     </div>
-    <h5 class="head">註冊 TECH IT 帳號</h5>
+    <h5 class="head">登入 TECH IT 帳號</h5>
     <form method="POST" action="login1.php">
         <label for="member_ac" id="ac">
             <img src="./img/icon_member.svg">
@@ -442,12 +442,11 @@
 
         <button class="login" id="btn_login">登入</button>
         <div class="forgot">
-            <a href="">忘記密碼</a> ｜ <a href="">忘記帳號</a>
+            <a href="./forgot.php">忘記密碼</a>
         </div>
 
         <div class="member_none">還不是會員嗎？ <a href="./signup.php">快速註冊新帳號</a></div>
 
-        <button class="back">回上一頁</button>
     </form>
 
 

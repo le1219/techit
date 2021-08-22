@@ -28,9 +28,7 @@ body {
   height: 225px;
   border-radius: 50%;
 }
-/* .forgot_pw {
-  margin-left: 260px;
-} */
+
 .login_page button {
   width: 150px;
   height: 50px;
@@ -38,6 +36,11 @@ body {
   box-shadow: 0 5px 8px #aaaaaa;
   border: 0px;
   margin: 10px 10px;
+  cursor: pointer;
+  color: white;
+}
+.login_page button:focus {
+  outline: none;
 }
 .login_page a {
   text-decoration: none;
@@ -46,6 +49,7 @@ body {
 }
 .signup {
   background-color: #ffffff;
+  color: rgb(85, 84, 84) !important;
 }
 .page_footer {
   margin: 50px 0;
@@ -60,6 +64,9 @@ button#tool.btn.btn-secondary {
   display: none !important;
   cursor: none;
   width: 300px;
+}
+button:focus {
+  outline: none;
 }
 
 /* 框

@@ -30,6 +30,10 @@ h5 {
   margin-bottom: 50px;
   color: white;
   margin: 10px auto;
+  cursor: pointer;
+}
+.go_product:focus {
+  outline: none;
 }
 div img {
   border-radius: 50%;

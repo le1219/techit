@@ -419,10 +419,10 @@
             <button type="button" class="btn btn-secondary" id="tool" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
                 新註冊會員可領 100 折價券 !
             </button>
-            <img src="https://picsum.photos/225/225" alt="">
+            <img src="./img/icon_member.svg" alt="">
         </div>
         <div>
-            <div class="forgot_pw">忘記密碼？</div>
+
             <div class="page_footer">
                 <button class="signup">會員註冊</button>
                 <button class="login">會員登入</button>

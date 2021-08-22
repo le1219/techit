@@ -18,7 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <!-- bootstrap 4 link -------------------------------->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script src="./JS/custom.js"></script>
+    <script src="./JS/custom.js?time=<?php echo time(); ?>"></script>
 
 
     <!-- google font link ------------------------------->
@@ -416,8 +416,26 @@
     <h5 class="head">註冊 TECH IT 帳號</h5>
     <div class="main_part">
         <div class="l_part">
-            <img src="https://picsum.photos/150/150" class="upload_img">
-            <h5>選擇大頭貼</h5>
+            <img src="./img/icon_member.svg" class="upload_img">
+            <h5 class="click_me"><u>選擇大頭貼</u> </h5>
+            <div class="full">
+                <div class="user_img">
+                    <h5>請選擇個人資料照片</h5>
+                    <div class="img_area">
+                        <div class="type"> <img src="./img/user_頭貼/photo_sticker_01.png" data-name="img_1">
+                            <H6>我是kirobo</H6>
+                        </div>
+                        <div class="type"><img src="./img/user_頭貼/photo_sticker_02.png" data-name="img_2">
+                            <H6>我是公子白</H6>
+                        </div>
+                        <div class="type"> <img src="./img/user_頭貼/photo_sticker_03.png" data-name="img_3">
+                            <H6>我是kebi</H6>
+                        </div>
+
+                    </div>
+                    <input type="button" value="確定" id="selected">
+                </div>
+            </div>
         </div>
         <div class="r_part">
             <form id="registered_form" method="POST" action="insertUser.php">
@@ -475,7 +493,7 @@
                 </label>
                 <!-- type="submit" -->
 
-                <button class="signup" id="btn_signup">註冊</button>
+                <input type="button" class="signup" id="btn_signup" value="註冊">
                 <!-- <a href="./success_signup.html" target="_self">註冊</a> -->
 
 
@@ -713,6 +731,18 @@
             $('.lv3-5').addClass('d-none');
             $('.lv2-5>p').css('color', '#5a5a5a');
         });
+
+        // this page
+        $('.click_me').click(function() {
+            $('.full').show();
+        })
+        $('.type > img').click(function() {
+            var a_src = $(this).attr('src');
+            $('.upload_img').attr('src', a_src);
+        })
+        $('#selected').click(function() {
+            $('.full').hide();
+        })
     </script>
 
 </body>
