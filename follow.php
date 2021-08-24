@@ -1,4 +1,6 @@
+<?php require_once 'db.inc.php' ?>
 <?php session_start() ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -143,7 +145,7 @@
 
                     <!-- 購物車 -->
                     <div class="hd_icon_link i3">
-                        <a href="#">
+                        <a href="shopping_cart.php">
                             <!-- <img src="./img/icon_shopping-cart.svg" alt=""> -->
                             <svg class="svg_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.28 39.27">
                                 <defs>
@@ -418,102 +420,103 @@
     <!-- 從這裡開始進行網頁撰寫 ------------------->
     <!-- WP : wrap -->
     <div class="wrap">
-        <div class="l_part ">
-            <h4 class="mt-5">分類</h4>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>品牌名字(A→Z)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>家電類別(A→Z)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>優惠活動(新→舊)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>優惠活動(舊→新)</label>
-            </div>
-
-            <h4 class="mt-5">排序</h4>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>金額(大→小)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>金額(小→大)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>上架時間(新→舊)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>上架時間(舊→新)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>加入時間(新→舊)</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name" <label for="c1"><span></span>加入時間(舊→新)</label>
-            </div>
-            <h4 class="mt-5">篩選</h4>
-            <div>
-                <input type="checkbox" name="product_name" checked="true"><label for="c1"><span></span>只顯示折扣商品</label>
-            </div>
-            <div>
-                <input type="checkbox" name="product_name"><label for="c1"><span></span>可快速到貨</label>
-            </div>
-            <!-- 結束 -->
-
-
-
-
-        </div>
         <div class="r_part">
             <div class="main_head">
                 <h3>商品種類</h3>
                 <div class="splide">
                     <div class="splide__track">
                         <ul class="splide__list">
-                            <li class="splide__slide">Slide 01</li>
-                            <li class="splide__slide">Slide 02</li>
-                            <li class="splide__slide">Slide 03</li>
-                            <li class="splide__slide">Slide 04</li>
-                            <li class="splide__slide">Slide 05</li>
-                            <li class="splide__slide">Slide 06</li>
-                            <li class="splide__slide">Slide 07</li>
-                            <li class="splide__slide">Slide 08</li>
-                            <li class="splide__slide">Slide 09</li>
-                            <li class="splide__slide">Slide 10</li>
+                            <?php
+                            $sql = "SELECT `brands`.`brand_name`,`brands`.`brand_id`,`products`.`prod_id` FROM `products` INNER JOIN `users_follow` ON `products`.`prod_id`=`users_follow`.`prod_id` INNER JOIN `brands` ON `products`.`brand_id`=`brands`.`brand_id`
+                            GROUP BY `products`.`brand_id`;";
+                            $stmt = $pdo->query($sql);
+                            if ($stmt->rowCount() > 0) {
+                                $arr = $stmt->fetchAll();
+                                foreach ($arr as $obj) {
+                            ?>
+                                    <li class="splide__slide"><a href="follow.php?brand_id=<?= $obj['brand_id'] ?>"><?= $obj['brand_name'] ?></a></li>
+                            <?php
+                                }
+                            } ?>
+
+                            <!-- $sql = "SELECT `brand_id` FROM `users_follow`";
+                            $arr = $pdo->query($sql)->fetchAll();
+                            foreach ($arr as $obj) {
+                                echo "<li class=\"splide__slide\">{$obj['brand_id']}</li>";
+                            } -->
+
+
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="main">
-                <h4>Panasonic php</h4>
+                <?php
+                if (isset($_GET['brand_id'])) {
+                    $sql = "SELECT * 
+                        FROM `brands`
+                        WHERE `brand_id`={$_GET['brand_id']}";
+
+                    $stmt = $pdo->query($sql);
+                    if ($stmt->rowCount() > 0) {
+                        $arr = $stmt->fetchAll();
+                        foreach ($arr as $obj) {
+
+                ?>
+                            <h4><?= $obj['brand_name'] ?></h4>
+
+                <?php
+                        }
+                    }
+                }
+                ?>
                 <div class="row">
-                    <div class="col-4">
-                        <div class="card1 ">
-                            <!-- 這個應該也是php -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="149.945" height="36" viewBox="0 0 149.945 36">
-                                <g id="Group_650" data-name="Group 650" transform="translate(-364.442 -1080)">
-                                    <g id="Group_275" data-name="Group 275">
-                                        <path id="Subtraction_1" data-name="Subtraction 1" d="M-6172.056,39H-6322V3h149.943L-6190.4,21l18.338,18Z" transform="translate(6686.442 1077)" fill="#8b82b2" opacity="0.561" />
-                                        <text id="免運優惠" transform="translate(377.442 1103.857)" fill="#fff" font-size="16" font-family="PingFangHK-Regular, PingFang HK" letter-spacing="0.2em">
-                                            <tspan x="0" y="0">免運優惠</tspan>
-                                        </text>
-                                    </g>
-                                </g>
-                            </svg>
-                            <div class="card_head">
-                                <h5 class="card_title">Toyota Kirobo Mini </h5>
-                                <img src="https://picsum.photos/250/200" alt="">
-                                <div class="price">NT$ 10,000</div>
-                            </div>
-                            <div class="card_footer">
-                                <button class="del"><img src="./img/icon_trash.svg" alt="">移出喜愛清單</button>
-                                <button><img src="./img/icon_shopping-cart.svg" alt="">加入購物車</button>
+                    <?php
+
+                    $sql = "SELECT *  FROM `products` INNER JOIN `users_follow` ON `products`.`prod_id`=`users_follow`.`prod_id` INNER JOIN `brands` ON `products`.`brand_id`=`brands`.`brand_id`";
+
+                    if (isset($_GET['brand_id'])) $sql .= "WHERE `products`.`brand_id`={$_GET['brand_id']} ";
+
+
+                    $stmt = $pdo->query($sql);
+                    if ($stmt->rowCount() > 0) {
+                        $arr = $stmt->fetchAll();
+                        foreach ($arr as $obj) {
+                    ?>
+                            <div class="col-4">
+
+                                <div class="card1 ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="149.945" height="36" viewBox="0 0 149.945 36">
+                                        <g id="Group_650" data-name="Group 650" transform="translate(-364.442 -1080)">
+                                            <g id="Group_275" data-name="Group 275">
+                                                <path id="Subtraction_1" data-name="Subtraction 1" d="M-6172.056,39H-6322V3h149.943L-6190.4,21l18.338,18Z" transform="translate(6686.442 1077)" fill="#8b82b2" opacity="0.561" />
+                                                <text id="免運優惠" transform="translate(377.442 1103.857)" fill="#fff" font-size="16" font-family="PingFangHK-Regular, PingFang HK" letter-spacing="0.2em">
+                                                    <tspan x="0" y="0">免運優惠</tspan>
+                                                </text>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <div class="card_head">
+                                        <h5 class="card_title"><?= $obj['prod_name'] ?>
+                                        </h5>
+
+                                        <div class="pic_area"> <img src="img/去背產品圖/<?= $obj['prod_thumbnail'] ?>" class="prod_thumbnail"></div>
+
+                                        <div class="price">NT$ <?= $obj['prod_price'] ?></div>
+                                    </div>
+                                    <div class="card_footer">
+                                        <button class="del"><img src="./img/icon_trash.svg" alt="">移出喜愛清單</button>
+                                        <button class="follow_shopping_cart"><img src="./img/icon_shopping-cart.svg" alt="">加入購物車</button>
+                                    </div>
+                                </div>
 
                             </div>
-                        </div>
-                    </div>
+                    <?php
+                        }
+                    }
+                    ?>
                 </div>
+
             </div>
 
         </div>
@@ -530,8 +533,8 @@
     </div>
 
     <div class="moblie_part">
-        <header style="height: 150px;background-color: thistle;"></header>
-        <div class="moblie">
+
+        <!-- <div class="moblie">
             <div class="head">
                 <h6 class="mb-0">所有商品</h6>
                 <button class="m_button">篩選</button>
@@ -580,37 +583,72 @@
                     </label>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="m_body">
-            <div class="m_card">
-                <div class="m_card_head">
-                    <h6 class="mb-0">Toyota Kirobo Mini (白色) </h6>
-                    <img class="del" src="./LOGO_ICON/垃圾桶.svg" alt="">
-                </div>
-                <div class="card_center">
-                    <img src="https://picsum.photos/80/80" alt="yophp！">
-                    <div class="r_rpart">
-                        <button class="m_button1 mr-2"><img src="./LOGO_ICON/比較清單.svg" alt=""> 比較</button>
-                        <div class="m_rpart">
-                            <div class="m_price mb-3">$$$$PHP</div>
-                            <button class="m_button1"><img src="./LOGO_ICON/購物車.svg" alt=""> 加入購物車</button>
+
+            <?php
+            $sql = "SELECT `prod_id`, `prod_name`,`prod_thumbnail`,`prod_price`
+                         FROM `users_follow`;";
+            $stmt = $pdo->query($sql);
+            if ($stmt->rowCount() > 0) {
+                $arr = $stmt->fetchAll();
+                foreach ($arr as $obj) {
+            ?>
+                    <div class="m_card">
+                        <div class="m_card_head ">
+                            <h6 class="card_title mb-0"><?= $obj['prod_name'] ?></h6>
+                            <img class="del" src="./LOGO_ICON/垃圾桶.svg" alt="">
+                        </div>
+                        <div class="card_center">
+
+                            <div class="pic_area"> <img src="img/去背產品圖/<?= $obj['prod_thumbnail'] ?>" class="prod_thumbnail"></div>
+
+                            <div class="r_rpart">
+                                <button class="del"><img src="./img/icon_trash.svg" alt="">移出喜愛清單</button>
+                                <div class="m_rpart">
+                                    <div class="m_price mb-3">NT$ <?= $obj['prod_price'] ?></div>
+                                    <button class="follow_shopping_cart"><img src="./img/icon_shopping-cart.svg" alt="">加入購物車</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+            <?php }
+            }
+
+            ?>
         </div>
-        <div class="full">
-            <div class="del_alert">
-                <h5>是否取消商品？</h5>
-                <div class="flex">
-                    <button class="ans_f">否</button>
-                    <button class="ans_y">確定</button>
-                </div>
-            </div>
-        </div>
+
+    </div>
+
+    </div>
+
     </div>
 
 
+    <form id="aa" method="POST" action="ShoppingCart.php">
+        <input type="hidden" name="prod_name" value="1">
+        <input type="hidden" name="prod_thumbnail" value="1">
+        <input type="hidden" name="prod_price" value="1">
+    </form>
+
+
+
+
+
+
+    </div>
+    <div class="full">
+        <div class="del_alert">
+            <h5>是否取消商品？</h5>
+            <div class="flex">
+                <button class="ans_f">否</button>
+                <button class="ans_y">確定</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    </div>
     <!-- 在這裡結束網頁撰寫 ----------------------->
 
 

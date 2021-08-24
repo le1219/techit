@@ -247,46 +247,90 @@ $(function () {
     });
 
     //shopping_cart
-    $('button.btn_minus').click(function (event) {
+    // $('button.btn_minus').click(function (event) {
+    //     let btn = $(this);
+    //     // var prod_name = $(this).parents('.card1').find('.card_title').text();
+    //     // var brand_id = $(this).parents('.card1').find('.brand_id').text();
+    //     // var prod_thumbnail = $(this).parents('.card1').find('.prod_thumbnail').text();
+    //     // var prod_price = $(this).parents('.card1').find('.card_price').text();
+        
+    //     if (parseInt(input_qty.val()) - 1 < 1) return false;
+    //     input_qty.val(parseInt(input_qty.val()) - 1);
+
+    //     //修改商品金額
+    //     $(`span[data-index="${index}"]`).text(input_qty.val() * prod_price);
+
+    //     //更新總計
+    //     let total = 0;
+    //     $(`input.qty`).each(function (index, element) {
+    //         total += (parseInt($(element).val()) * parseInt($(element).attr('data-prod-price')));
+    //     });
+    //     $('span#total').text(total);
+    // });
+    //     $('.del').click(function(event){
+    //     event.preventDefault();
+
+    //     let index = $(this).attr('data-index');
+    //     $.get('delete.php',{index:index},function(obj){
+    //         if(obj['success'])
+    //         {
+    //             location.reload();
+    //         }else{
+    //             alert(`${obj['info']}`);
+    //         }
+    //     },json);
+    // })
+        
+  
+    //follow加購物車
+     $('.follow_shopping_cart').click(function(event){
         let btn = $(this);
-        let index = btn.attr('data-index');
-        let prod_price = btn.attr('data-prod-price');
-        let input_qty = $(`input.qty[data-index="${index}"]`);
-        if (parseInt(input_qty.val()) - 1 < 1) return false;
-        input_qty.val(parseInt(input_qty.val()) - 1);
+        var prod_name = $(this).parents('.card1').find('.card_title').text();
+        // var brand_id = $(this).parents('.card1').find('.brand_id').text();
+        var prod_thumbnail = $(this).parents('.card1').find('.prod_thumbnail').attr('src');
+        var prod_price = $(this).parents('.card1').find('.price').text();
+        
+        //送出 post 請求，加入購物車
+        let objProduct = {
+            // brand_id: brand_id,
+            prod_name: prod_name,
+            prod_thumbnail: prod_thumbnail,
+            prod_price: prod_price,
+            prod_qty:'1'
+            
+        };
+        console.log(objProduct);
+        // $('#aa').submit();
+        $.post("ShoppingCart.php", objProduct, function (obj) {
+            if (obj['success']) {
+                //成功訊息
+                alert('加入購物車成功');
 
-        //修改商品金額
-        $(`span[data-index="${index}"]`).text(input_qty.val() * prod_price);
-
-        //更新總計
-        let total = 0;
-        $(`input.qty`).each(function (index, element) {
-            total += (parseInt($(element).val()) * parseInt($(element).attr('data-prod-price')));
-        });
-        $('span#total').text(total);
+                //將網頁上的購物車商品數量更新
+                $('span#count_products').text(obj['count_products']);
+            }else{
+                console.log(obj);
+            }
+            
+        }, 'json');
     });
-    $('.del').click(function(event){
+
+     $('.del').click(function (event) {
+        //避免元素的預設事件被觸發
         event.preventDefault();
 
+        //取得選定刪除的購物車索引
         let index = $(this).attr('data-index');
-        $.get('delete.php',{index:index},function(obj){
-            if(obj['success']{
+
+        $.get("delete.php", { index: index }, function (obj) {
+            if (obj['success']) {
                 location.reload();
-            }else{
+            } else {
                 alert(`${obj['info']}`);
             }
-        },json);
-        })
-    })
-    // 加購物車
-    // $('').click(function(event){
-    //     let btn = $(this);
-
-        //post
-        // let objProduct ={
-        //     prod_id : btn.attr(''),
-        // }
-    // })
+            console.log(obj);
+        }, 'json');
+    });
 
 });
 

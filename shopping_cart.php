@@ -1,5 +1,10 @@
 <?php require_once 'db.inc.php' ?>
 <?php session_start() ?>
+<?php
+if (!$_SESSION['shopping_cart']) {
+    $_SESSION['shopping_cart'] = [];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>購物車頁面</title>
-    <link rel="stylesheet" href="./CSS/shopping_cart.css">
+    <link rel="stylesheet" href="CSS/shopping_cart.css">
 
 
     <!-- bootstrap 4 link -------------------------------->
@@ -110,7 +115,7 @@
 
                     <!-- 喜好清單 -->
                     <div class="hd_icon_link i2">
-                        <a href="#">
+                        <a href="follow.php">
                             <!-- <img src="./img/icon_saved.svg" alt=""> -->
                             <svg class="svg_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.14 35.05">
                                 <defs>
@@ -408,149 +413,125 @@
     <!-- WP : wrap -->
     <!-- ★★★ 請不要調整wrap原數值(in 0.body.css) -->
     <!-- <div class="wrap"> -->
-
+    <div><?php print_r($_SESSION['shopping_cart']); ?></div>
     <!-- ↓↓↓ 測試區域可刪 ↓↓↓ -->
-    <form name="cart" method="post" action="">
 
-        <div class="container">
-            <h4>購物車</h4>
-            <div class="cart">
+    <div class="container">
+        <h4>購物車</h4>
+        <div class="cart">
+            <div class="l_part">
+                <div class="shopp_list">
+                    <label for="" class="list_head">
+                        <input type="checkbox">
+                        <h5 class="brand">石頭科技</h5>
+                    </label>
+                    <!-- 這個重複商品div -->
+                    <?php
+                    foreach ($_SESSION['shopping_cart'] as $index => $obj) { ?>
+                        <div class="list">
+                            <div class="list_left">
+                                <label for="">
+                                    <input type="checkbox">
+                                </label>
+                                <img class="product_img img-thumbnail" src="<?= $obj['prod_thumbnail'] ?>">
+                            </div>
+                            <div class="list_center">
+                                <div class="flex">
+                                    <h5 class="title"><?= $obj['prod_name'] ?></h5>
+                                    <img class="del" src="./LOGO_ICON/垃圾桶.svg" alt="">
+                                </div>
+                                <div class="info_spec">
+                                    <h6 class="spec">規格 </h6>
+                                    <h6 class="colour"> 接PHP</h6>
+                                </div>
+                                <div class="info_price">
+                                    <h6 class="price">單價 </h6>
+                                    <h6 class="p_rice"><?= $obj['prod_price'] ?></h6>
+                                    <div class="counter">
+                                        <img src="./LOGO_ICON/minus.svg" alt="">
+                                        <input type="text" value="<?= $obj['prod_qty'] ?>"> <img src="./LOGO_ICON/plus.svg" alt="">
+                                    </div>
+                                </div>
+                                <div class="remove">
+                                    <img src="./LOGO_ICON/喜好清單.svg" alt=""> 移回喜愛清單
+                                </div>
+                            </div>
 
-                <div class="l_part">
-                    <div class="shopp_list">
-
-                        <label for="" class="list_head">
-                            <input type="checkbox">
-
-                            <h5 class="brand"><?= $obj['prod_name'] ?></h5>
-                        </label>
-                        <!-- 這個重複商品div -->
-
-                        <div class="list_left">
-                            <label for="">
-                                <input type="checkbox">
-                            </label>
-                            <img src="<?= $obj['prod_thumbnail'] ?>" class="product_img">
                         </div>
-                        <div class="list_center">
-                            <div class="flex">
-                                <h5 class="title"><?= $obj['prod_name'] ?></h5>
-                                <img class="del" src="./img/icon_trash.svg" alt="">
-                            </div>
-                            <div class="info_spec">
-                                <h6 class="spec">規格 </h6>
-                                <div class="colour"><?= $obj['prod_size'] ?></div>
-                            </div>
-                            <div class="list">
-                                <?php
-                                $count = 0;
-                                $total = 0;
-
-                                if (isset($_SEESION['cart']) && count($_SESSION['cart']) > 0) {
-                                    $count = count($_SEESION['cart']);
-
-                                    foreach ($_SEESION['cart'] as $key => $$obj) {
-                                        $total += $obj['prod_price'] * $obj['prod_qty'];
-
-                                ?>
-
-
-                                        <div class="info_price">
-                                            <h6 class="price">單價 </h6>
-                                            <h6 class="p_rice"><?= $obj['prod_price'] ?></h6>
-                                            <div class="counter">
-                                                <img src="./img/minus.svg" class="minus" data-index="<?= $key ?>" data-prod-price="<?= $obj['prod_price'] ?>">
-
-                                                <input type="text" name="qty[]" class="form-control qty" placeholder="" data-index="<?= $key ?>" data-prod-price="<?= $obj['prod_price'] ?>" value="<?= $obj['prod_qty'] ?>">
-
-                                                <img src="./img/plus.svg" class="plus" data-index="<?= $key ?>" data-prod-price="<?= $obj['prod_price'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="remove">
-                                            <img src="./img/icon_saved.svg" id="remove"> 移回喜愛清單
-                                        </div>
-                            </div>
-                            <!-- <div class="list_right">
-        
-                            </div> -->
-                        </div>
-                <?php
-                                    }
-                                }
-                ?>
-                <div class="promotion">
-                    <h5>商品折扣</h5>
-                    <p>消費商品金額滿 NT$ 1,000 ，現折 NT$ 100 ！</p>
-                </div>
-                <div class="subtotal">
-                    <h6>小計</h6>
-                    <h5 class="total">NT$<?= $total ?></h5>
-                </div>
+                    <?php } ?>
+                    <div class="promotion">
+                        <h5>商品折扣</h5>
+                        <p>消費商品金額滿 NT$ 1,000 ，現折 NT$ 100 ！</p>
+                    </div>
+                    <div class="subtotal">
+                        <h5>小計</h5>
+                        <p>NT$ 10,000</p>
                     </div>
                 </div>
-                <div class="r_part">
-                    <div class="amount">
-                        <div class="card_title">
-                            <h5>訂單金額</h5>
-                        </div>
-                        <div class="amount_center">
-                            <div class="flex">
-                                <h6>商品小計</h6>
-                                <h5 class="total">NT$<?= $total ?></h5>
-                            </div>
-                            <div class="flex">
-                                <h5>折扣碼</h4><input type="text">
-                            </div>
-                            <div class="flex">
-                                <h6>運費</h6>
-                                <h5>NT$ 20,00php</h5>
-                            </div>
-                        </div>
-                        <p class="amount_promo">夏季專屬優惠 5/10 - 5/20滿NT$ 10,000 免運費</p>
-                        <div class="amount_footer">
-                            <h6>商品總計</h>
-                                <h5 class="total_amount">NT$ <?= $total ?></h5>
-                        </div>
-
-                        <!-- >0 button -->
-                        <?php if ($count > 0) { ?>
-                            <button class="go_credit">前往結帳</button>
-                        <?php } ?>
-
+            </div>
+            <div class="r_part">
+                <div class="amount">
+                    <div class="card_title">
+                        <h5>訂單金額</h5>
                     </div>
-                    <div class="amount">
-                        <div class="card_title">
-                            <h5>追加商品</h5>
+                    <div class="amount_center">
+                        <div class="flex">
+                            <h6>商品小計</h6>
+                            <h5 class="total">NT$<?= $total ?></h5>
                         </div>
-                        <div class="container">
-                            <div class="card">
-                                <div class="l_card">
-                                    <h6 class="title">PHP接</h6>
-                                    <p>about product</p>
-                                    <!-- <div class="flex"> -->
-                                    <h6 class="pr">NT$ 12,000</h6>
-                                    <a href="" class="add">加入購物車</a>
-                                    <!-- </div> -->
-                                </div>
-                                <div class="r_card">
-                                    <img src="https://picsum.photos/100/100" alt="">
-                                </div>
+                        <div class="flex">
+                            <h5>折扣碼</h4><input type="text">
+                        </div>
+                        <div class="flex">
+                            <h6>運費</h6>
+                            <h5>NT$ 20,00php</h5>
+                        </div>
+                    </div>
+                    <p class="amount_promo">夏季專屬優惠 5/10 - 5/20滿NT$ 10,000 免運費</p>
+                    <div class="amount_footer">
+                        <h6>商品總計</h>
+                            <h5 class="total_amount">NT$ <?= $total ?></h5>
+                    </div>
+
+                    <!-- >0 button -->
+                    <?php if ($count > 0) { ?>
+                        <button class="go_credit">前往結帳</button>
+                    <?php } ?>
+
+                </div>
+                <div class="amount">
+                    <div class="card_title">
+                        <h5>追加商品</h5>
+                    </div>
+                    <div class="container">
+                        <div class="card">
+                            <div class="l_card">
+                                <h6 class="title">PHP接</h6>
+                                <p>about product</p>
+                                <!-- <div class="flex"> -->
+                                <h6 class="pr">NT$ 12,000</h6>
+                                <a href="" class="add">加入購物車</a>
+                                <!-- </div> -->
+                            </div>
+                            <div class="r_card">
+                                <img src="https://picsum.photos/100/100" alt="">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="full">
-            <div class="del_alert">
-                <h5>是否取消商品？</h5>
-                <div class="flex">
-                    <button class="ans_f">否</button>
-                    <button class="ans_y">確定</button>
-                </div>
+    <div class="full">
+        <div class="del_alert">
+            <h5>是否取消商品？</h5>
+            <div class="flex">
+                <button class="ans_f">否</button>
+                <button class="ans_y">確定</button>
             </div>
         </div>
+    </div>
 
     </form>
     <!-- ↓↓↓ 測試區域可刪 ↓↓↓ -->
@@ -562,7 +543,7 @@
             </label>
             <div class="m_list">
                 <label for="select_me">
-                    <input type="checkbox" id="select_me">brand name
+                    <input type="checkbox" class="select_me">brand name
                 </label>
                 <div class="flex">
                     <div class="list_left">
@@ -590,66 +571,7 @@
                     </div>
                 </div>
             </div>
-            <div class="m_list">
-                <label for="select_me">
-                    <input type="checkbox" id="select_me">brand name
-                </label>
-                <div class="flex">
-                    <div class="list_left">
-                        <img class="product_img" src="https://picsum.photos/225/225" alt="這邊要接php">
-                    </div>
-                    <div class="list_center">
-                        <div class="flex">
-                            <h5 class="title">品牌名字與型號接php吧</h5>
-                            <img class="del" src="./img/icon_trash.svg" alt="">
-                        </div>
-                        <div class="info_spec">
-                            <h6 class="spec">規格 </h6>
-                            <h6 class="colour"> 接PHP</h6>
-                        </div>
-                        <div class="info_price">
-                            <h6 class="price">單價 </h6>
-                            <h6 class="p_rice">NT$ 接PHP</h6>
-                            <div class="counter">
-                                <img src="./LOGO_ICON/minus.svg" alt=""> 1 <img src="./LOGO_ICON/plus.svg" alt="">
-                            </div>
-                        </div>
-                        <div class="remove">
-                            <img src="./img/icon_saved.svg" alt=""> 移回喜愛清單
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="m_list">
-                <label for="select_me">
-                    <input type="checkbox" id="select_me">brand name
-                </label>
-                <div class="flex">
-                    <div class="list_left">
-                        <img class="product_img" src="https://picsum.photos/225/225" alt="這邊要接php">
-                    </div>
-                    <div class="list_center">
-                        <div class="flex">
-                            <h5 class="title">品牌名字與型號接php吧</h5>
-                            <img class="del" src="./img/icon_trash.svg" alt="">
-                        </div>
-                        <div class="info_spec">
-                            <h6 class="spec">規格 </h6>
-                            <h6 class="colour"> 接PHP</h6>
-                        </div>
-                        <div class="info_price">
-                            <h6 class="price">單價 </h6>
-                            <h6 class="p_rice">NT$ 接PHP</h6>
-                            <div class="counter">
-                                <img src="./LOGO_ICON/minus.svg" alt=""> 1 <img src="./LOGO_ICON/plus.svg" alt="">
-                            </div>
-                        </div>
-                        <div class="remove">
-                            <img src="./img/icon_saved.svg" alt=""> 移回喜愛清單
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <!-- <footer> -->
             <div class="m_footer">
                 <div class="footer_head">

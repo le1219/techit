@@ -133,7 +133,7 @@
 
                     <!-- 購物車 -->
                     <div class="hd_icon_link i3">
-                        <a href="#">
+                        <a href="shopping_cart.php">
                             <!-- <img src="./img/icon_shopping-cart.svg" alt=""> -->
                             <svg class="svg_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.28 39.27">
                                 <defs>
