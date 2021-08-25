@@ -64,7 +64,7 @@ if (
         $_SESSION['shopping_cart'][] = [
             "prod_name" => $_POST['prod_name'],
             "prod_thumbnail" => $_POST['prod_thumbnail'],
-            "prod_price" => (int)$_POST['prod_price'],
+            "prod_price" => $_POST['prod_price'],
             "prod_qty" => (int)$_POST['prod_qty']
         ];
     }

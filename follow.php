@@ -1,5 +1,6 @@
 <?php require_once 'db.inc.php' ?>
 <?php session_start() ?>
+<!-- <php session_destroy()  -->
 
 <!DOCTYPE html>
 <html lang="en">
