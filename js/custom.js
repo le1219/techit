@@ -6,6 +6,8 @@ $(function () {
     let input_check = $('input#check_pwd');
     let input_phone_number = $('input#phone_number');
 
+    count_total();
+
     $("input#birthday").datepicker({
         dateFormat: 'yy-mm-dd',
         defaultDate: '1999-02-02',
@@ -226,60 +228,35 @@ $(function () {
         }
        
     })
-     //shopping_cart
-     $('button.btn_plus').click(function (event) {
-        //計算數量
-        let btn = $(this);
-        let index = btn.attr('data-index');
-        let prod_price = btn.attr('data-prod-price');
-        let input_qty = $(`input.qty[data-index="${index}"]`);
-        input_qty.val(parseInt(input_qty.val()) + 1);
 
-        //修改商品金額
-        $(`span[data-index="${index}"]`).text(input_qty.val() * prod_price);
-
-        //更新總計
-        let total = 0;
-        $(`input.qty`).each(function (index, element) {
-            total += (parseInt($(element).val()) * parseInt($(element).attr('data-prod-price')));
-        });
-        $('h5.total').text(total);
+    //計算數量+
+    $('button.btn_plus').click(function () {
+        let nowCount = Number($(this).parents('.list').find('.item_price').val());
+        $(this).parents('.list').find('.item_price').val(Number(nowCount)+1);
+        count_total();
     });
 
-    //shopping_cart
-    // $('button.btn_minus').click(function (event) {
-    //     let btn = $(this);
-    //     // var prod_name = $(this).parents('.card1').find('.card_title').text();
-    //     // var brand_id = $(this).parents('.card1').find('.brand_id').text();
-    //     // var prod_thumbnail = $(this).parents('.card1').find('.prod_thumbnail').text();
-    //     // var prod_price = $(this).parents('.card1').find('.card_price').text();
-        
-    //     if (parseInt(input_qty.val()) - 1 < 1) return false;
-    //     input_qty.val(parseInt(input_qty.val()) - 1);
+    //計算數量-
+    $('button.btn_minus').click(function (event) {
+        let nowCount = Number($(this).parents('.list').find('.item_price').val());
+        if(nowCount > 0){
+            nowCount--;
+        }
+        $(this).parents('.list').find('.item_price').val(nowCount);
+        count_total();
+    });
 
-    //     //修改商品金額
-    //     $(`span[data-index="${index}"]`).text(input_qty.val() * prod_price);
-
-    //     //更新總計
-    //     let total = 0;
-    //     $(`input.qty`).each(function (index, element) {
-    //         total += (parseInt($(element).val()) * parseInt($(element).attr('data-prod-price')));
-    //     });
-    //     $('span#total').text(total);
-    // });
-    //     $('.del').click(function(event){
-    //     event.preventDefault();
-
-    //     let index = $(this).attr('data-index');
-    //     $.get('delete.php',{index:index},function(obj){
-    //         if(obj['success'])
-    //         {
-    //             location.reload();
-    //         }else{
-    //             alert(`${obj['info']}`);
-    //         }
-    //     },json);
-    // })
+    //計算總計
+    function count_total(){
+        let total = 0;
+        let item_total = 0;
+        $('.list').each(function(){
+            item_total =  Number($(this).find('.single_price').text().replace('NT$',''))*Number($(this).find('.item_price').val());
+            total +=item_total;
+        });
+        $('.total').text(`NT$ ${total}`);
+    }
+    
         
   
     //follow加購物車
@@ -289,15 +266,15 @@ $(function () {
         // var brand_id = $(this).parents('.card1').find('.brand_id').text();
         var prod_thumbnail = $(this).parents('.card1').find('.prod_thumbnail').attr('src');
         var prod_price = $(this).parents('.card1').find('.price').text();
+        var brand_id = $(this).data('brand_id');
         
         //送出 post 請求，加入購物車
         let objProduct = {
-            // brand_id: brand_id,
+            brand_id: brand_id,
             prod_name: prod_name,
             prod_thumbnail: prod_thumbnail,
             prod_price: prod_price,
-            prod_qty:'1'
-            
+            prod_qty:'1'      
         };
         console.log(objProduct);
         // $('#aa').submit();
@@ -315,6 +292,8 @@ $(function () {
         }, 'json');
     });
 
+
+    
      $('.del').click(function (event) {
         //避免元素的預設事件被觸發
         event.preventDefault();
@@ -331,6 +310,88 @@ $(function () {
             console.log(obj);
         }, 'json');
     });
+
+    //加入商品至購物車/喜好清單/比較列表
+
+//加入商品至購物車
+$('button.joincart').click(function(){
+    //取得 button 的 jQuery 物件
+    let btn = $(this);
+
+    //送出 post 請求，加入購物車
+    let objProduct = {
+        brand_id: btn.attr('data-brand_id'),
+        prod_id: btn.attr('data-prod-id'),
+        prod_name: btn.attr('data-prod-name'),
+        prod_thumbnail: btn.attr('data-prod-thumbnail'),
+        prod_price: btn.attr('data-prod-price'),
+        prod_qty:'1' 
+    };
+    console.log(objProduct);
+    $.post("ShoppingCart.php", objProduct, function(obj){
+        if(obj['success']){
+            //成功訊息
+            alert('加入購物車成功');
+        }
+        console.log(obj);
+    }, 'json');
+
+    
+});
+
+//加入喜好清單
+$('button.saved').click(function(event){
+    //避免元素的預設事件被觸發
+    event.preventDefault();
+
+    //取得 button 的 jQuery 物件
+    let btn = $(this);
+
+    //送出 post 請求，加入購物車
+    let objProduct = {
+        prod_id: btn.attr('data-prod-id'),
+    };
+    $.post("follow.php", objProduct, function(obj){
+        if(obj['success']){
+            //成功訊息
+            alert('商品追蹤成功');
+        } else {
+            alert(`${obj['info']}`);
+        }
+        console.log(obj);
+    }, 'json');
+});
+
+
+//加入比較列表
+     $('button.compare').click(function(event){
+        //取得 button 的 jQuery 物件
+        let btn = $(this);
+
+        //送出 post 請求，加入購物車
+        let objProduct = {
+            prod_id: btn.attr('data-prod-id'),
+            prod_name: btn.attr('data-prod-name'),
+            prod_thumbnail: btn.attr('data-prod-thumbnail'),
+            prod_price: btn.attr('data-prod-price'),
+        };
+
+        $.post("compare.php", objProduct, function(obj){
+            if(obj['success']){
+                //成功訊息
+                alert('加入比較列表成功');
+            }
+            console.log(obj);
+        }, 'json');
+
+    
+    });
+
+    //點擊購物車內的品牌
+    // $('.brand_check').click(function(){
+    //     $('.list').hide();
+    //     $(`.list[data-brand_id=${$(this).val()}]`).show();
+    // });
 
 });
 

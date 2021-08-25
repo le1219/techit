@@ -1,30 +1,7 @@
 /* 正文開始 */
 .wrap {
   background-color: white !important;
-  margin: 50px 0px !important;
 }
-
-/* .l_part {
-  width: 216px;
-  height: 915px;
-  background-color: #f6f6f6;
-  border-radius: 0px 20px 20px 0px;
-  padding-left: 20px;
-}
-.l_part input {
-  margin: 10px;
-  appearance: none;
-  height: 20px;
-  width: 20px;
-  background-color: white;
-  cursor: pointer;
-}
-.l_part div {
-  margin-top: 5px;
-  display: flex;
-  align-items: center;
-} */
-
 .r_part {
   width: 90%;
   margin: 0px auto;
@@ -186,123 +163,35 @@ li {
   box-shadow: 0 5px 8px #aaaaaa;
 }
 
-/* -----------------mobile--------------------- */
-.head {
-  width: 80%;
-  margin: 20px auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.m_card_head {
-  display: flex;
-  align-items: center;
-}
-.m_card_head img {
-  width: 15px;
-  margin-left: 10px;
-}
-.m_button {
-  background-color: #fa8873;
-  color: white;
-  text-align: center;
-  width: 80px;
-  min-height: 10px;
-  box-shadow: 0 3px 6px;
-  border-radius: 5px;
-  border: 0;
-  padding: 1px;
-  font-size: 10px;
-}
-.s_select {
-  position: absolute;
-  top: 43px;
-  right: 20px;
-  background-color: white;
-  box-shadow: 0 6px 12px #000000;
-  display: none;
-}
-.s_select label {
-  display: flex;
-  align-items: center;
-  margin: 5px;
-}
-.s_select input {
-  appearance: none;
-  height: 15px;
-  width: 15px;
-  border-radius: 10%;
-  border: 1px solid black;
-  margin: 5px;
-}
-.m_body {
-  width: 90%;
-  margin: 0px auto;
-}
-.s_select h6 {
-  background-color: #f4f4f4;
-  padding: 10px 0px 10px 10px;
-}
-.m_card {
-  width: 100%;
-  height: 126px;
-  box-shadow: 0 6px 8px #777777;
-  padding: 8px;
-  border-radius: 10px;
-}
-.card_center {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-.r_rpart {
-  display: flex;
-  align-items: flex-end;
-}
-.r_rpart img {
-  width: 10px;
-  margin-right: 10px;
-}
-.m_rpart {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.m_button1 {
-  min-width: 10px !important;
-  height: 25px;
-  text-align: center;
-  padding: 5px 10px;
-  border-radius: 10px !important;
-  border: none;
-  background-color: #ffffff;
-  box-shadow: 0 15px 20px #bebebe;
-  display: flex;
-  align-items: center;
-  font-size: 10px;
-}
-
-/* rwd */
-
 @media screen and (max-width: 500px) {
-  .wrap {
-    display: block;
+  .r_part {
+    width: 100%;
+    box-shadow: 1px 1px 10px #aaaaaa;
   }
-  header {
-    display: none;
+  .main {
+    width: 95%;
+    border-radius: 10px;
   }
-}
-@media screen and (max-width: 499px) {
-  .wrap {
-    display: none;
+  .card1 {
+    height: 390px;
+    margin: 10px auto;
   }
-  header {
-    display: none !important;
+  .card_title {
+    font-size: 14px;
+    margin-bottom: 0px;
   }
-}
-@media screen and (min-width: 400px) {
-  .moblie_part {
-    display: none;
+  .main h4 {
+    margin: 0px;
+  }
+  .splide__arrows button {
+    height: 25px;
+    width: 25px;
+  }
+  .splide__arrow svg {
+    width: 1em !important;
+    height: 1em !important;
+  }
+  .active-menu {
+    font-size: 16px;
   }
 }

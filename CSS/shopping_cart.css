@@ -118,6 +118,10 @@ input[type="checkbox"] {
   align-items: center;
   justify-content: space-between;
 }
+button,
+input {
+  outline: none;
+}
 .price,
 .spec {
   margin: 0px;
@@ -137,9 +141,16 @@ input[type="checkbox"] {
   margin: 10px;
 }
 .del,
-#remove {
+.remove > img,
+.button > img {
   width: 15px;
 }
+.button {
+  height: 30px;
+  border-radius: 0;
+  width: 10px;
+}
+
 .remove {
   display: flex;
   align-items: center;

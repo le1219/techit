@@ -7,12 +7,12 @@ $obj['success'] = false;
 $obj['info'] = "查無購物車編號";
 
 //若購物車當中有 GET 指定的 index，則將之刪除，並重建索引
-if (isset($_GET["index"]) && isset($_SESSION['cart'][$_GET["index"]])) {
+if (isset($_GET["index"]) && isset($_SESSION['shopping_cart'][$_GET["index"]])) {
     //刪除指定的索引位置
-    unset($_SESSION['cart'][$_GET["index"]]);
+    unset($_SESSION['shopping_cart'][$_GET["index"]]);
 
     //重建索引
-    $_SESSION['cart'] = array_values($_SESSION['cart']);
+    $_SESSION['shopping_cart'] = array_values($_SESSION['shopping_cart']);
 
     $obj['success'] = true;
     $obj['info'] = "已刪除指定商品";

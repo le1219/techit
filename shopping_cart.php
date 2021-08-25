@@ -1,5 +1,6 @@
 <?php require_once 'db.inc.php' ?>
 <?php session_start() ?>
+
 <?php
 if (!$_SESSION['shopping_cart']) {
     $_SESSION['shopping_cart'] = [];
@@ -413,52 +414,78 @@ if (!$_SESSION['shopping_cart']) {
     <!-- WP : wrap -->
     <!-- ★★★ 請不要調整wrap原數值(in 0.body.css) -->
     <!-- <div class="wrap"> -->
-    <div><?php print_r($_SESSION['shopping_cart']); ?></div>
+    <!-- <div class="charley"><?php print_r($_SESSION['shopping_cart']); ?></div> -->
     <!-- ↓↓↓ 測試區域可刪 ↓↓↓ -->
 
     <div class="container">
         <h4>購物車</h4>
         <div class="cart">
+
             <div class="l_part">
                 <div class="shopp_list">
-                    <label for="" class="list_head">
-                        <input type="checkbox">
-                        <h5 class="brand">石頭科技</h5>
-                    </label>
-                    <!-- 這個重複商品div -->
                     <?php
-                    foreach ($_SESSION['shopping_cart'] as $index => $obj) { ?>
-                        <div class="list">
-                            <div class="list_left">
-                                <label for="">
-                                    <input type="checkbox">
-                                </label>
-                                <img class="product_img img-thumbnail" src="<?= $obj['prod_thumbnail'] ?>">
-                            </div>
-                            <div class="list_center">
-                                <div class="flex">
-                                    <h5 class="title"><?= $obj['prod_name'] ?></h5>
-                                    <img class="del" src="./LOGO_ICON/垃圾桶.svg" alt="">
-                                </div>
-                                <div class="info_spec">
-                                    <h6 class="spec">規格 </h6>
-                                    <h6 class="colour"> 接PHP</h6>
-                                </div>
-                                <div class="info_price">
-                                    <h6 class="price">單價 </h6>
-                                    <h6 class="p_rice"><?= $obj['prod_price'] ?></h6>
-                                    <div class="counter">
-                                        <img src="./LOGO_ICON/minus.svg" alt="">
-                                        <input type="text" value="<?= $obj['prod_qty'] ?>"> <img src="./LOGO_ICON/plus.svg" alt="">
-                                    </div>
-                                </div>
-                                <div class="remove">
-                                    <img src="./LOGO_ICON/喜好清單.svg" alt=""> 移回喜愛清單
-                                </div>
-                            </div>
+                    $cartBrandId = [];
 
-                        </div>
-                    <?php } ?>
+                    foreach ($_SESSION['shopping_cart'] as $index => $obj) {
+                        $cartBrandId[] = $obj['brand_id'];
+                        $cartBrandId = array_unique($cartBrandId);
+                    }
+
+                    foreach ($cartBrandId as $index => $obj) {
+                        $sql = "SELECT `brand_name` FROM `brands` WHERE `brand_id` = $obj ";
+                        $stmt = $pdo->query($sql);
+                        if ($stmt->rowCount() > 0) {
+                            $arr = $stmt->fetchAll();
+                    ?>
+                            <label class="list_head">
+                                <input type="checkbox" class="brand_check" value="">
+                                <h5 class="brand"><?= $arr[0]['brand_name'] ?></h5>
+                            </label>
+                            <?php foreach ($_SESSION['shopping_cart'] as $index => $item) {
+                                if ($item['brand_id'] == $obj) { ?>
+                                    <div class="list">
+                                        <div class="list_left">
+                                            <label>
+                                                <input type="checkbox">
+                                            </label>
+                                            <img class="product_img img-thumbnail" src="<?= $item['prod_thumbnail'] ?>">
+                                        </div>
+                                        <div class="list_center">
+                                            <div class="flex">
+                                                <h5 class="title"><?= $item['prod_name'] ?></h5>
+                                                <img class="del" src="img/icon_trash.svg" alt="" data-index="<?= $index ?>">
+                                            </div>
+                                            <div class="info_spec">
+                                                <h6 class="spec">規格 </h6>
+                                                <h6 class="colour"> 接PHP</h6>
+                                            </div>
+                                            <div class="info_price">
+                                                <h6 class="price">單價 </h6>
+                                                <h6 class="p_rice single_price"><?= $item['prod_price'] ?></h6>
+                                                <div class="counter">
+                                                    <button class="btn btn_minus" type="button" data-index="<?= $prod_qty ?>" data-prod-price="<?= $item['prod_price'] ?>"> <img src="img/minus.svg" alt=""></button>
+
+                                                    <input type="text" class="item_price" value="<?= $item['prod_qty'] ?>">
+
+                                                    <button class="btn btn_plus" type="button" data-index="<?= $prod_qty ?>" data-prod-price="<?= $item['prod_price'] ?>"> <img src="img/plus.svg" alt=""></button>
+                                                </div>
+                                            </div>
+                                            <div class="remove">
+                                                <img src="img/icon_saved.svg" alt=""> 移回喜愛清單
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+
+
+                    <?php }
+                        }
+                    }
+                    ?>
+
+
+
+
                     <div class="promotion">
                         <h5>商品折扣</h5>
                         <p>消費商品金額滿 NT$ 1,000 ，現折 NT$ 100 ！</p>
@@ -477,7 +504,7 @@ if (!$_SESSION['shopping_cart']) {
                     <div class="amount_center">
                         <div class="flex">
                             <h6>商品小計</h6>
-                            <h5 class="total">NT$<?= $total ?></h5>
+                            <h5 class="total">NT$</h5>
                         </div>
                         <div class="flex">
                             <h5>折扣碼</h4><input type="text">
@@ -490,13 +517,13 @@ if (!$_SESSION['shopping_cart']) {
                     <p class="amount_promo">夏季專屬優惠 5/10 - 5/20滿NT$ 10,000 免運費</p>
                     <div class="amount_footer">
                         <h6>商品總計</h>
-                            <h5 class="total_amount">NT$ <?= $total ?></h5>
+                            <h5 class="total_amount">NT$</h5>
                     </div>
 
                     <!-- >0 button -->
-                    <?php if ($count > 0) { ?>
-                        <button class="go_credit">前往結帳</button>
-                    <?php } ?>
+
+                    <button class="go_credit">前往結帳</button>
+
 
                 </div>
                 <div class="amount">
@@ -562,7 +589,11 @@ if (!$_SESSION['shopping_cart']) {
                             <h6 class="price">單價 </h6>
                             <h6 class="p_rice">NT$ 接PHP</h6>
                             <div class="counter">
-                                <img src="./LOGO_ICON/minus.svg" alt=""> 1 <img src="./LOGO_ICON/plus.svg" alt="">
+                                <button class="button btn_minus" type="button" data-index="<?= $key ?>" data-prod-price="<?= $obj['prod_price'] ?>"> <img src="img/minus.svg" alt=""></button>
+
+                                <input type="text" value="<?= $obj['prod_qty'] ?>">
+
+                                <button class="button btn_minus" type="button" data-index="<?= $key ?>" data-prod-price="<?= $obj['prod_price'] ?>"> <img src="img/plus.svg" alt=""></button>
                             </div>
                         </div>
                         <div class="remove">

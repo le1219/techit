@@ -1,7 +1,5 @@
 <?php require_once 'db.inc.php' ?>
 <?php session_start() ?>
-<!-- <php session_destroy()  -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -424,6 +422,7 @@
         <div class="r_part">
             <div class="main_head">
                 <h3>商品種類</h3>
+
                 <div class="splide">
                     <div class="splide__track">
                         <ul class="splide__list">
@@ -484,8 +483,7 @@
                         $arr = $stmt->fetchAll();
                         foreach ($arr as $obj) {
                     ?>
-                            <div class="col-4">
-
+                            <div class="col-md-4 col-12">
                                 <div class="card1 ">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="149.945" height="36" viewBox="0 0 149.945 36">
                                         <g id="Group_650" data-name="Group 650" transform="translate(-364.442 -1080)">
@@ -507,7 +505,9 @@
                                     </div>
                                     <div class="card_footer">
                                         <button class="del"><img src="./img/icon_trash.svg" alt="">移出喜愛清單</button>
-                                        <button class="follow_shopping_cart"><img src="./img/icon_shopping-cart.svg" alt="">加入購物車</button>
+                                        <button class="follow_shopping_cart" data-brand_id="<?= $obj['brand_id'] ?>">
+                                            <img src="./img/icon_shopping-cart.svg" alt="">加入購物車
+                                        </button>
                                     </div>
                                 </div>
 
@@ -533,97 +533,9 @@
         </div>
     </div>
 
-    <div class="moblie_part">
 
-        <!-- <div class="moblie">
-            <div class="head">
-                <h6 class="mb-0">所有商品</h6>
-                <button class="m_button">篩選</button>
-            </div>
-            <div class="s_select">
-                <h6 class="">分類</h6>
-                <div>
-                    <label for="c1"> <input type="checkbox" name="product_name">品牌名字(A→Z)</label>
-                </div>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name"> 家電類別(A→Z)</label>
-                </div>
-                <div>
-                    <label for="c1"> <input type="checkbox" name="product_name">優惠活動(新→舊)</label>
-                </div>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name">優惠活動(舊→新)</label>
-                </div>
-                <h6 class="">排序</h6>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name">金額(大→小)</label>
-                </div>
-                <div>
-                    <label for="c1"> <input type="checkbox" name="product_name">金額(小→大)</label>
-                </div>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name">上架時間(新→舊)</label>
-                </div>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name">上架時間(舊→新)</label>
-                </div>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name">加入時間(新→舊)</label>
-                </div>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name">加入時間(舊→新)</label>
-                </div>
-                <h6 class="">篩選</h6>
-                <div>
-                    <label for="c1"><input type="checkbox" name="product_name" checked="true">只顯示折扣商品</label>
-                </div>
-                <div>
-                    <label for="c1">
-                        <input type="checkbox" name="product_name">
-                        可快速到貨
-                    </label>
-                </div>
-            </div>
-        </div> -->
-        <div class="m_body">
 
-            <?php
-            $sql = "SELECT `prod_id`, `prod_name`,`prod_thumbnail`,`prod_price`
-                         FROM `users_follow`;";
-            $stmt = $pdo->query($sql);
-            if ($stmt->rowCount() > 0) {
-                $arr = $stmt->fetchAll();
-                foreach ($arr as $obj) {
-            ?>
-                    <div class="m_card">
-                        <div class="m_card_head ">
-                            <h6 class="card_title mb-0"><?= $obj['prod_name'] ?></h6>
-                            <img class="del" src="./LOGO_ICON/垃圾桶.svg" alt="">
-                        </div>
-                        <div class="card_center">
 
-                            <div class="pic_area"> <img src="img/去背產品圖/<?= $obj['prod_thumbnail'] ?>" class="prod_thumbnail"></div>
-
-                            <div class="r_rpart">
-                                <button class="del"><img src="./img/icon_trash.svg" alt="">移出喜愛清單</button>
-                                <div class="m_rpart">
-                                    <div class="m_price mb-3">NT$ <?= $obj['prod_price'] ?></div>
-                                    <button class="follow_shopping_cart"><img src="./img/icon_shopping-cart.svg" alt="">加入購物車</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            <?php }
-            }
-
-            ?>
-        </div>
-
-    </div>
-
-    </div>
-
-    </div>
 
 
     <form id="aa" method="POST" action="ShoppingCart.php">
@@ -637,19 +549,7 @@
 
 
 
-    </div>
-    <div class="full">
-        <div class="del_alert">
-            <h5>是否取消商品？</h5>
-            <div class="flex">
-                <button class="ans_f">否</button>
-                <button class="ans_y">確定</button>
-            </div>
-        </div>
-    </div>
-    </div>
 
-    </div>
     <!-- 在這裡結束網頁撰寫 ----------------------->
 
 
