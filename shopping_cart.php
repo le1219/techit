@@ -414,12 +414,11 @@ if (!$_SESSION['shopping_cart']) {
     <!-- WP : wrap -->
     <!-- ★★★ 請不要調整wrap原數值(in 0.body.css) -->
     <!-- <div class="wrap"> -->
-    <!-- <div class="charley"><?php print_r($_SESSION['shopping_cart']); ?></div> -->
     <!-- ↓↓↓ 測試區域可刪 ↓↓↓ -->
 
     <div class="container">
         <h4>購物車</h4>
-        <div class="cart">
+        <form name="myForm" action="logistics.php" method="post" class="cart">
 
             <div class="l_part">
                 <div class="shopp_list">
@@ -444,6 +443,10 @@ if (!$_SESSION['shopping_cart']) {
                             <?php foreach ($_SESSION['shopping_cart'] as $index => $item) {
                                 if ($item['brand_id'] == $obj) { ?>
                                     <div class="list">
+                                        <input type="hidden" name="itemImg[]" value="<?= $item['prod_thumbnail'] ?>">
+                                        <input type="hidden" name="itemBrand[]" value="<?= $item['brand_id'] ?>">
+                                        <input type="hidden" name="itemName[]" value="<?= $item['prod_name'] ?>">
+                                        <input type="hidden" name="itemPrice[]" value="<?= $item['prod_price'] ?>">
                                         <div class="list_left">
                                             <label>
                                                 <input type="checkbox">
@@ -465,7 +468,7 @@ if (!$_SESSION['shopping_cart']) {
                                                 <div class="counter">
                                                     <button class="btn btn_minus" type="button" data-index="<?= $prod_qty ?>" data-prod-price="<?= $item['prod_price'] ?>"> <img src="img/minus.svg" alt=""></button>
 
-                                                    <input type="text" class="item_price" value="<?= $item['prod_qty'] ?>">
+                                                    <input type="text" class="item_price" name="itemQty[]" value="<?= $item['prod_qty'] ?>">
 
                                                     <button class="btn btn_plus" type="button" data-index="<?= $prod_qty ?>" data-prod-price="<?= $item['prod_price'] ?>"> <img src="img/plus.svg" alt=""></button>
                                                 </div>
@@ -505,19 +508,23 @@ if (!$_SESSION['shopping_cart']) {
                         <div class="flex">
                             <h6>商品小計</h6>
                             <h5 class="total">NT$</h5>
+                            <input type="hidden" name="amount" class="amount_val">
                         </div>
-                        <div class="flex">
-                            <h5>折扣碼</h4><input type="text">
+                        <div class="flex coupon_div">
+                            <h5>折扣碼</h4><input type="text" name="coupon_code">
+                                <a href="" class="btn btn-link" id="check_coupon_code">確認</a>
                         </div>
                         <div class="flex">
                             <h6>運費</h6>
-                            <h5>NT$ 20,00php</h5>
+                            <h5>NT$ <span class="logistic_fee">60</span></h5>
+                            <input type="hidden" name="logistic_fee" class="logistic_fee_val">
                         </div>
                     </div>
-                    <p class="amount_promo">夏季專屬優惠 5/10 - 5/20滿NT$ 10,000 免運費</p>
+                    <p class="amount_promo">夏季專屬優惠 5/10 - 5/20滿NT$10,000 免運費</p>
                     <div class="amount_footer">
                         <h6>商品總計</h>
-                            <h5 class="total_amount">NT$</h5>
+                            <h5 class="total_amount"></h5>
+                            <input type="hidden" name="total_amount" class="total_amount_val">
                     </div>
 
                     <!-- >0 button -->
@@ -547,10 +554,20 @@ if (!$_SESSION['shopping_cart']) {
                     </div>
                 </div>
             </div>
+        </form>
+    </div>
+    <div class="m_footer ">
+        <div class="footer_head">
+            <div class="f_l">
+                <div class="show_detail">展開明細</div>
+                <div class="count_product">結帳總金額：4件</div>
+            </div>
+            <div class="total_amount">NT$22,000</div>
         </div>
+        <button type="submit" class="go_credit">前往結帳</button>
     </div>
 
-    <div class="full">
+    <!-- <div class="full">
         <div class="del_alert">
             <h5>是否取消商品？</h5>
             <div class="flex">
@@ -558,76 +575,17 @@ if (!$_SESSION['shopping_cart']) {
                 <button class="ans_y">確定</button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     </form>
     <!-- ↓↓↓ 測試區域可刪 ↓↓↓ -->
-    <form name="cart" method="post" action="">
-        <div class="mobile">
-            <h6 class="promotion">夏季專屬優惠5/10 - 5/20滿NT$10,000 免運費</h6>
-            <label for="select_all">
-                <input type="checkbox" id="select_all">全選
-            </label>
-            <div class="m_list">
-                <label for="select_me">
-                    <input type="checkbox" class="select_me">brand name
-                </label>
-                <div class="flex">
-                    <div class="list_left">
-                        <img class="product_img" src="https://picsum.photos/225/225" alt="這邊要接php">
-                    </div>
-                    <div class="list_center">
-                        <div class="flex">
-                            <h5 class="title">品牌名字與型號接php吧</h5>
-                            <img class="del" src="./img/icon_trash.svg" alt="">
-                        </div>
-                        <div class="info_spec">
-                            <h6 class="spec">規格 </h6>
-                            <h6 class="colour"> 接PHP</h6>
-                        </div>
-                        <div class="info_price">
-                            <h6 class="price">單價 </h6>
-                            <h6 class="p_rice">NT$ 接PHP</h6>
-                            <div class="counter">
-                                <button class="button btn_minus" type="button" data-index="<?= $key ?>" data-prod-price="<?= $obj['prod_price'] ?>"> <img src="img/minus.svg" alt=""></button>
 
-                                <input type="text" value="<?= $obj['prod_qty'] ?>">
 
-                                <button class="button btn_minus" type="button" data-index="<?= $key ?>" data-prod-price="<?= $obj['prod_price'] ?>"> <img src="img/plus.svg" alt=""></button>
-                            </div>
-                        </div>
-                        <div class="remove">
-                            <img src="./img/icon_saved.svg" alt=""> 移回喜愛清單
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- <footer> -->
-            <div class="m_footer">
-                <div class="footer_head">
-                    <div class="f_l">
-                        <div class="show_detail">展開明細</div>
-                        <div class="count_product">結帳總金額：4件</div>
-                    </div>
-                    <div class="total_amount">NT$22,000</div>
-                </div>
-                <button class="go_credit">前往結帳</button>
-            </div>
+    <!-- <footer> -->
 
-            <!-- </footer> -->
-        </div>
-        <div class="full">
-            <div class="del_alert">
-                <h5>是否取消商品？</h5>
-                <div class="flex">
-                    <button class="ans_f">否</button>
-                    <button class="ans_y">確定</button>
-                </div>
-            </div>
-        </div>
-    </form>
 
+    <!-- </footer> -->
 
     <!-- </div> -->
     <!-- ↑↑↑ 測試區域可刪 ↑↑↑ -->

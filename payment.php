@@ -1,5 +1,21 @@
 <?php require_once 'db.inc.php' ?>
 <?php session_start() ?>
+<?php
+//如果這個階段沒有購物車，就將頁面轉到商品確認頁
+// if (!isset($_SESSION['cart'])) {
+//     header("Location: shopping_cart.php");
+//     exit();
+// }
+
+//將表單資訊寫入 session，之後建立訂單時，一起變成訂單資訊
+$_SESSION['form'] = [];
+$_SESSION['form']['transport_type'] = $_POST['transport_type'];
+$_SESSION['form']['recipient_name'] = $_POST['recipient_name'];
+$_SESSION['form']['recipient_phone_number'] = $_POST['recipient_phone_number'];
+$_SESSION['form']['recipient_address'] = $_POST['recipient_address'];
+$_SESSION['form']['recipient_comments'] = $_POST['recipient_comments'];
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +38,8 @@
     <!-- bootstrap 4 link -------------------------------->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://js.stripe.com/v2/"></script>
-    <script src="./DatPayment-master/dist/js/DatPayment.js"></script>
+
+
 
     <!-- google font link ------------------------------->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -112,7 +129,7 @@
 
                     <!-- 喜好清單 -->
                     <div class="hd_icon_link i2">
-                        <a href="#">
+                        <a href="follow.php">
                             <!-- <img src="./img/icon_saved.svg" alt=""> -->
                             <svg class="svg_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.14 35.05">
                                 <defs>
@@ -136,7 +153,7 @@
 
                     <!-- 購物車 -->
                     <div class="hd_icon_link i3">
-                        <a href="#">
+                        <a href="shopping_cart.php">
                             <!-- <img src="./img/icon_shopping-cart.svg" alt=""> -->
                             <svg class="svg_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.28 39.27">
                                 <defs>
@@ -240,7 +257,7 @@
                 </a>
 
                 <!-- 喜好清單 -->
-                <a href="#"></a>
+                <a href="folow.php"></a>
                 <div class="tog_icon_link">
                     <img class="tog_icon" src="./img/icon_saved.svg" alt="">
                     喜好清單
@@ -422,517 +439,450 @@
                 </div>
                 <div class="circle circle3"></div>
             </div>
+            <form action="order_complete.php" method="POST">
+                <div class="option_method">
 
-            <div class="option_method">
-                <!-- php去跑 -->
-                <div class="product_list">
-                    <div class="product_info">
-                        <img src="https://picsum.photos/100/100" alt="">
-                        <div class="center">
-                            <h5>陪你陪你好睡覺</h5>
-                            <h6>數量： 5 件</h6>
-                        </div>
-                    </div>
-                    <h4 class="right">NT$10,000</h4>
-                </div>
-                <!-- php去跑 -->
-                <div class="product_list">
-                    <div class="product_info">
-                        <img src="https://picsum.photos/100/100" alt="">
-                        <div class="center">
-                            <h5>陪你陪你好睡覺</h5>
-                            <h6>數量： 5 件</h6>
-                        </div>
-                    </div>
-                    <h4 class="right">NT$10,000</h4>
-                </div>
+                    <?php
+                    $cartBrandId = [];
 
-                <!-- 看要跑幾個 -->
+                    foreach ($_SESSION['shopping_cart'] as $index => $obj) {
+                        $cartBrandId[] = $obj['brand_id'];
+                        $cartBrandId = array_unique($cartBrandId);
+                    }
 
-                <!-- 接運送方式 -->
-                <div class="info">
-                    <h5>運送方式：郵局掛號 免運(購物車達NT$10,000)</h5>
-                    <div class="logistics_info">
-                        <h6>訂購人姓名：</h6>
-                        <h6>訂購人聯絡電話：</h6>
-                        <h6>送貨地址：</h6>
-                        <h6>備注：</h6>
-
-                    </div>
-                    <div class="right">
-                        <h5>商品總計：NT$ php</h5>
-                        <h5>商品折扣：NT$ php</h5>
-                        <h5>運費總計：NT$ php</h5>
-                        <h4 class="right">NT$10,000</h4>
-                    </div>
-
-                </div>
-            </div>
+                    foreach ($cartBrandId as $index => $obj) {
+                        $sql = "SELECT `brand_name` FROM `brands` WHERE `brand_id` = $obj ";
+                        $stmt = $pdo->query($sql);
+                        if ($stmt->rowCount() > 0) {
+                            $arr = $stmt->fetchAll();
+                    ?>
+                            <label class="list_head">
+                                <h5 class="brand"><?= $arr[0]['brand_name'] ?></h5>
+                            </label>
+                            <?php foreach ($_SESSION['itemInfo'] as $index => $item) {
+                                if ($item['itemBrand'] == $obj) {
+                                    $thisItem = (explode("NT$ ", $item['itemPrice']))[1];
+                            ?>
+                                    <div class="list">
+                                        <div class="product_list">
+                                            <div class="product_info">
+                                                <img src="<?= $item['itemImg'] ?>">
+                                                <div class="center">
+                                                    <h5 class="title"><?= $item['itemName'] ?></h5>
+                                                    <input type="text" readonly class="item_price" name="qty[]" value="<?= $item['itemQty'] ?>">
+                                                </div>
+                                            </div>
+                                            <h4 class="right">NT$ <?= (int)$thisItem * (int)$item['itemQty'] ?></h4>
+                                        </div>
+                                    <?php } ?>
 
 
-            <h5>請選擇付款方式</h5>
-            <div class="select_tri">
-                <select id="select_select">
-                    <option value="0">請選擇</option>
-                    <option value="1">信用卡付款</option>
-                </select>
-                <div class="tri"></div>
-            </div>
-            <div class="credit">
-                <form action="/" method="POST" id="payment-form" class="datpayment-form">
-                    <div class="dpf-title">
-                        Payment by credit card
-                        <div class="accepted-cards-logo"></div>
-                    </div>
-                    <div class="dpf-card-placeholder"></div>
-                    <div class="dpf-input-container">
-                        <div class="dpf-input-row">
-                            <label class="dpf-input-label">Credit Card Number</label>
-                            <div class="dpf-input-container with-icon">
-                                <span class="dpf-input-icon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
-                                <input type="text" class="dpf-input" size="20" data-type="number">
+                        <?php }
+                        }
+                    }
+                        ?>
+
+
+                        <!-- 接運送方式 -->
+                        <div class="info">
+                            <h5>運送方式：郵局掛號 免運(購物車達NT$10,000)</h5>
+                            <div class="logistics_info">
+                                <input type="hidden" name="recipient_name" value="<?php echo $_POST['recipient_name']; ?>">
+                                <input type="hidden" name="recipient_phone_number" value="<?php echo $_POST['recipient_phone_number']; ?>">
+                                <input type="hidden" name="recipient_phone_number" value="<?php echo $_POST['recipient_phone_number']; ?>">
+                                <input type="hidden" name="recipient_address" value="<?php echo $_POST['recipient_address_no'] . ' ' . $_POST['recipient_address']; ?>">
+                                <input type="hidden" name="recipient_address_no" value="<?php echo $_POST['recipient_address']; ?>">
+                                <input type="hidden" name="recipient_comments" value="<?php echo $_POST['recipient_comments']; ?>">
+
+                                <h6>訂購人姓名：<?php echo $_POST['recipient_name']; ?></h6>
+                                <h6>訂購人聯絡電話：<?php echo $_POST['recipient_phone_number']; ?></h6>
+                                <h6>送貨地址：<?php echo $_POST['recipient_address_no'] . ' ' . $_POST['recipient_address']; ?></h6>
+                                <h6>備注：<?php echo $_POST['recipient_comments']; ?></h6>
+
                             </div>
-                        </div>
-                        <div class="dpf-input-row">
-                            <div class="dpf-input-column">
-                                <input type="hidden" size="2" data-type="exp_month" placeholder="MM">
-                                <input type="hidden" size="2" data-type="exp_year" placeholder="YY">
-                                <label class="dpf-input-label">Expiration Date</label>
-                                <div class="dpf-input-container">
-                                    <input type="text" class="dpf-input" data-type="expiry">
-                                </div>
+                            <div class="right">
+                                <h5>商品總計：NT$ <?= $_SESSION['feeInfo']['amount'] ?></h5>
+                                <!-- <h5>商品折扣：NT$ php</h5> -->
+                                <h5>運費總計：NT$ <?= $_SESSION['feeInfo']['logistic_fee'] ?></h5>
+                                <h4 class="right">NT$ <?= $_SESSION['feeInfo']['total_amount'] ?></h4>
                             </div>
-                            <div class="dpf-input-column">
-                                <label class="dpf-input-label">Code</label>
-                                <div class="dpf-input-container">
-                                    <input type="text" class="dpf-input" size="4" data-type="cvc">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dpf-input-row">
-                            <label class="dpf-input-label">Full Name</label>
-                            <div class="dpf-input-container">
-                                <input type="text" size="4" class="dpf-input" data-type="name">
-                            </div>
-                        </div>
-                        <button type="submit" class="dpf-submit">
-                            <span class="btn-active-state">
-                                Submit
-                            </span>
-                            <span class="btn-loading-state">
-                                <i class="fa fa-refresh "></i>
-                            </span>
-                        </button>
-                    </div>
-                </form>
-            </div>
 
-            <div class="info">
-                <h5>發票選項</h5>
-                <p>發票一經開立後不可更改，請確定資訊是否填寫正確喔！</p>
-                <div class="invoice">
-                    <div class="invoice_type">
-
-                        <h6>發票類型</h6>
-                        <div class="select_tri">
-                            <select class="bill_type ">
-                                <option value="0">請選擇</option>
-                                <option value="1">捐贈發票</option>
-                                <option value="2">電子發票</option>
-                            </select>
-
-                            <div class="tri"></div>
                         </div>
-                        <div class="select_tri">
-                            <select class="bill_2"></select>
-                            <div class="tri"></div>
-                        </div>
-                        <input type="text" class="bill_3">
-                    </div>
-                    <h6>統一編號：<input type="text"></h6>
-                    <h6>發票抬頭：<input type="text"></h6>
+                                    </div>
+
+
+                                    <h5 name="transport_payment">請選擇付款方式</h5>
+                                    <div class="select_tri">
+                                        <select id="select_select">
+                                            <option value="0">請選擇</option>
+                                            <option value="1">信用卡付款</option>
+                                        </select>
+                                        <div class="tri"></div>
+                                    </div>
+                                    <div class="credit">
+                                        <div class='card-wrapper'></div>
+                                        <div id="credit">
+                                            <input type="text" name="number" placeholder="請填入信用卡號">
+                                            <input type="text" name="name" placeholder="請填入持卡人姓名">
+                                            <input type="text" name="expiry" placeholder="請填入到期年限">
+                                            <input type="text" name="cvc" placeholder="請填入CVC">
+                                        </div>
+                                    </div>
+
+                                    <div class=" info">
+                                        <h5>發票選項</h5>
+                                        <p>發票一經開立後不可更改，請確定資訊是否填寫正確喔！</p>
+                                        <div class="invoice">
+                                            <div class="invoice_type">
+
+                                                <h6>發票類型</h6>
+                                                <div class="select_tri">
+                                                    <select class="bill_type ">
+                                                        <option value="0">請選擇</option>
+                                                        <option value="1">捐贈發票</option>
+                                                        <option value="2">電子發票</option>
+                                                    </select>
+
+                                                    <div class="tri"></div>
+                                                </div>
+                                                <div class="select_tri">
+                                                    <select class="bill_2"></select>
+                                                    <div class="tri"></div>
+                                                </div>
+                                                <input type="text" class="bill_3">
+                                            </div>
+                                            <h6>統一編號：<input type="text"></h6>
+                                            <h6>發票抬頭：<input type="text"></h6>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="l_part">
+                                        <button class="back">回到購物車</button>
+                                        <button class="next">確認付款</button>
+                                    </div>
 
                 </div>
-
-            </div>
-
-
-            <div class="l_part">
-                <button class="back">回到購物車</button>
-                <button class="next">確認付款</button>
-            </div>
+            </form>
+            <!-- ↑↑↑ 測試區域可刪 ↑↑↑ -->
 
         </div>
 
-        <!-- ↑↑↑ 測試區域可刪 ↑↑↑ -->
-
-    </div>
-
-    <!-- 在這裡結束網頁撰寫 ----------------------->
+        <!-- 在這裡結束網頁撰寫 ----------------------->
 
 
 
-    <!-- FT : Footer ----------------------------------------------->
+        <!-- FT : Footer ----------------------------------------------->
 
-    <footer class="footer d-flex">
+        <footer class="footer d-flex">
 
-        <!-- LOGO -------------------------------->
-        <a class="ft_logo" href="#">
-            <img src="img/logo-png.png" alt="">
-        </a>
+            <!-- LOGO -------------------------------->
+            <a class="ft_logo" href="#">
+                <img src="img/logo-png.png" alt="">
+            </a>
 
-        <!-- ft_box_link ---------------------------->
-        <div class="ft_box">
+            <!-- ft_box_link ---------------------------->
+            <div class="ft_box">
 
-            <div class="d-flex ft_box_top">
+                <div class="d-flex ft_box_top">
 
-                <!-- footer_link 品牌專區 -->
-                <p class="col ft_tt">
-                    <a href="#">品牌專區</a>
-                </p>
+                    <!-- footer_link 品牌專區 -->
+                    <p class="col ft_tt">
+                        <a href="#">品牌專區</a>
+                    </p>
 
-                <!-- footer_link 商品分類 -->
-                <p class="col ft_tt">
-                    <a href="#">商品分類</a>
-                </p>
+                    <!-- footer_link 商品分類 -->
+                    <p class="col ft_tt">
+                        <a href="#">商品分類</a>
+                    </p>
 
-                <!-- footer_link 智慧專欄 -->
-                <p class="col ft_tt">
-                    <a href="#">智慧專欄</a>
-                </p>
+                    <!-- footer_link 智慧專欄 -->
+                    <p class="col ft_tt">
+                        <a href="#">智慧專欄</a>
+                    </p>
 
-                <!-- footer_link 聯絡客服 -->
-                <p class="col ft_tt">
-                    <a href="#">聯絡客服</a>
-                </p>
+                    <!-- footer_link 聯絡客服 -->
+                    <p class="col ft_tt">
+                        <a href="#">聯絡客服</a>
+                    </p>
 
-                <!-- footer_link 會員資料 -->
-                <p class="col ft_tt">
-                    <a href="#">會員資料</a>
-                </p>
+                    <!-- footer_link 會員資料 -->
+                    <p class="col ft_tt">
+                        <a href="#">會員資料</a>
+                    </p>
+                </div>
+
+                <div class="ft_box_bot">
+                    © copy right by Tech it
+                </div>
+
             </div>
 
-            <div class="ft_box_bot">
-                © copy right by Tech it
+            <!-- ft_mobile_copy_right -->
+            <div class="ft_mb_copy_right d-lg-none">
+                <p>© copy right by Tech it</p>
             </div>
 
-        </div>
-
-        <!-- ft_mobile_copy_right -->
-        <div class="ft_mb_copy_right d-lg-none">
-            <p>© copy right by Tech it</p>
-        </div>
-
-    </footer>
+        </footer>
 
 
-    <!-- btn_toTop --------------------------------------------->
+        <!-- btn_toTop --------------------------------------------->
 
-    <button class="btn_toTop btn">
-        <p>TOP</p>
-    </button>
-
-
-    <!-- JQ ----------------------------------->
-    <script>
-        // btn_toTop ----------------------------------
-        $(".btn_toTop").click(function() {
-            $("html, body").animate({
-                scrollTop: 0
-            }, "slow");
-            return false;
-        });
+        <button class="btn_toTop btn">
+            <p>TOP</p>
+        </button>
 
 
-        // PC : click & hover ----------------------------
-        // mouseenter ------------------------------
-        $('.t1').mouseenter(function() {
-            console.log('navbar mouseenter');
-            // pc
-            $('.t1').css('border-bottom', '1px solid rgb(11, 141, 173)');
-            $('.t1>a').css('color', 'rgb(11, 141, 173)')
-        });
-
-        $('.t2').mouseenter(function() {
-            console.log('navbar mouseenter');
-            // pc
-            $('.t2').css('border-bottom', '1px solid rgb(11, 141, 173)');
-            $('.t2>a').css('color', 'rgb(11, 141, 173)')
-        });
-
-        $('.t3').mouseenter(function() {
-            console.log('navbar mouseenter');
-            // pc
-            $('.t3').css('border-bottom', '1px solid rgb(11, 141, 173)');
-            $('.t3>a').css('color', 'rgb(11, 141, 173)')
-        });
-
-        $('.t4').mouseenter(function() {
-            console.log('navbar mouseenter');
-            // pc
-            $('.t4').css('border-bottom', '1px solid rgb(11, 141, 173)');
-            $('.t4>a').css('color', 'rgb(11, 141, 173)')
-        });
+        <!-- JQ ----------------------------------->
+        <script>
+            // btn_toTop ----------------------------------
+            $(".btn_toTop").click(function() {
+                $("html, body").animate({
+                    scrollTop: 0
+                }, "slow");
+                return false;
+            });
 
 
-        // mouseleave --------------------------------
-        $('.t1').mouseleave(function() {
-            console.log('navbar mouseleave');
-            // pc
-            $('.t1').css('border-bottom', '1px solid #707070');
-            $('.t1>a').css('color', 'black')
-        });
+            // PC : click & hover ----------------------------
+            // mouseenter ------------------------------
+            $('.t1').mouseenter(function() {
+                console.log('navbar mouseenter');
+                // pc
+                $('.t1').css('border-bottom', '1px solid rgb(11, 141, 173)');
+                $('.t1>a').css('color', 'rgb(11, 141, 173)')
+            });
 
-        $('.t2').mouseleave(function() {
-            console.log('navbar mouseleave');
-            // pc
-            $('.t2').css('border-bottom', '1px solid #707070');
-            $('.t2>a').css('color', 'black')
-        });
+            $('.t2').mouseenter(function() {
+                console.log('navbar mouseenter');
+                // pc
+                $('.t2').css('border-bottom', '1px solid rgb(11, 141, 173)');
+                $('.t2>a').css('color', 'rgb(11, 141, 173)')
+            });
 
-        $('.t3').mouseleave(function() {
-            console.log('navbar mouseleave');
-            // pc
-            $('.t3').css('border-bottom', '1px solid #707070');
-            $('.t3>a').css('color', 'black')
-        });
+            $('.t3').mouseenter(function() {
+                console.log('navbar mouseenter');
+                // pc
+                $('.t3').css('border-bottom', '1px solid rgb(11, 141, 173)');
+                $('.t3>a').css('color', 'rgb(11, 141, 173)')
+            });
 
-        $('.t4').mouseleave(function() {
-            console.log('navbar mouseleave');
-            // pc
-            $('.t4').css('border-bottom', '1px solid #707070');
-            $('.t4>a').css('color', 'black')
-        });
+            $('.t4').mouseenter(function() {
+                console.log('navbar mouseenter');
+                // pc
+                $('.t4').css('border-bottom', '1px solid rgb(11, 141, 173)');
+                $('.t4>a').css('color', 'rgb(11, 141, 173)')
+            });
 
 
-        // toggler 下拉選單 ---------------------------------
+            // mouseleave --------------------------------
+            $('.t1').mouseleave(function() {
+                console.log('navbar mouseleave');
+                // pc
+                $('.t1').css('border-bottom', '1px solid #707070');
+                $('.t1>a').css('color', 'black')
+            });
 
-        // open/close toggler
-        $('.btn_toggler').click(function() {
-            console.log('btn_toggler click');
-            $('.hd_toggler').removeClass('d-none');
-        });
+            $('.t2').mouseleave(function() {
+                console.log('navbar mouseleave');
+                // pc
+                $('.t2').css('border-bottom', '1px solid #707070');
+                $('.t2>a').css('color', 'black')
+            });
 
-        $('.toggler_box_right').click(function() {
-            console.log('.toggler_box_right click');
-            $('.hd_toggler').addClass('d-none');
-        });
+            $('.t3').mouseleave(function() {
+                console.log('navbar mouseleave');
+                // pc
+                $('.t3').css('border-bottom', '1px solid #707070');
+                $('.t3>a').css('color', 'black')
+            });
 
-        // tog_lv_0 商品分類
-        $('.tog_lv_0').click(function() {
-            console.log('商品分類 click');
-            if ($('.tog_lv_1').hasClass('d-none')) {
-                $('.tog_lv_1').removeClass('d-none');
-            } else {
-                $('.tog_lv_1').addClass('d-none');
-            }
+            $('.t4').mouseleave(function() {
+                console.log('navbar mouseleave');
+                // pc
+                $('.t4').css('border-bottom', '1px solid #707070');
+                $('.t4>a').css('color', 'black')
+            });
 
-            // 清除項目點選效果
-            $('.lv3-1,.lv3-2,.lv3-3,.lv3-4,.lv3-5').addClass('d-none');
-            $('.lv2-1>p, .lv2-2>p, .lv2-3>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
-            // $('.tog_lv_0').css('color', 'white').css('background-color', 'wheat');
-        });
 
-        // tog_lv_2
-        // tog_lv2-1 廚房家電
-        $('.lv2-1').click(function() {
-            console.log('廚房家電 click');
-            if ($('.lv3-1').hasClass('d-none')) {
-                $('.lv3-1').removeClass('d-none');
-                $('.lv2-1>p').css('color', 'rgb(11, 141, 173)');
-            } else {
+            // toggler 下拉選單 ---------------------------------
+
+            // open/close toggler
+            $('.btn_toggler').click(function() {
+                console.log('btn_toggler click');
+                $('.hd_toggler').removeClass('d-none');
+            });
+
+            $('.toggler_box_right').click(function() {
+                console.log('.toggler_box_right click');
+                $('.hd_toggler').addClass('d-none');
+            });
+
+            // tog_lv_0 商品分類
+            $('.tog_lv_0').click(function() {
+                console.log('商品分類 click');
+                if ($('.tog_lv_1').hasClass('d-none')) {
+                    $('.tog_lv_1').removeClass('d-none');
+                } else {
+                    $('.tog_lv_1').addClass('d-none');
+                }
+
+                // 清除項目點選效果
+                $('.lv3-1,.lv3-2,.lv3-3,.lv3-4,.lv3-5').addClass('d-none');
+                $('.lv2-1>p, .lv2-2>p, .lv2-3>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
+                // $('.tog_lv_0').css('color', 'white').css('background-color', 'wheat');
+            });
+
+            // tog_lv_2
+            // tog_lv2-1 廚房家電
+            $('.lv2-1').click(function() {
+                console.log('廚房家電 click');
+                if ($('.lv3-1').hasClass('d-none')) {
+                    $('.lv3-1').removeClass('d-none');
+                    $('.lv2-1>p').css('color', 'rgb(11, 141, 173)');
+                } else {
+                    $('.lv3-1').addClass('d-none');
+                }
+
+                // 清除項目點選效果
+                $('.lv3-2, .lv3-3, .lv3-4, .lv3-5').addClass('d-none');
+                $('.lv2-2>p, .lv2-3>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
+            });
+
+            $('.lv2-2, .lv2-3, .lv2-4, .lv2-5').click(function() {
+                console.log('關閉廚房家電 click');
                 $('.lv3-1').addClass('d-none');
-            }
+                $('.lv2-1>p').css('color', '#5a5a5a');
+            });
 
-            // 清除項目點選效果
-            $('.lv3-2, .lv3-3, .lv3-4, .lv3-5').addClass('d-none');
-            $('.lv2-2>p, .lv2-3>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
-        });
+            // tog_lv2-2 居家安全
+            $('.lv2-2').click(function() {
+                console.log('居家安全 click');
+                if ($('.lv3-2').hasClass('d-none')) {
+                    $('.lv3-2').removeClass('d-none');
+                    $('.lv2-2>p').css('color', 'rgb(11, 141, 173)');
+                } else {
+                    $('.lv3-2').addClass('d-none');
+                }
 
-        $('.lv2-2, .lv2-3, .lv2-4, .lv2-5').click(function() {
-            console.log('關閉廚房家電 click');
-            $('.lv3-1').addClass('d-none');
-            $('.lv2-1>p').css('color', '#5a5a5a');
-        });
+                // 清除項目點選效果
+                $('.lv3-1, .lv3-3, .lv3-4, .lv3-5').addClass('d-none');
+                $('.lv2-1>p, .lv2-3>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
+            });
 
-        // tog_lv2-2 居家安全
-        $('.lv2-2').click(function() {
-            console.log('居家安全 click');
-            if ($('.lv3-2').hasClass('d-none')) {
-                $('.lv3-2').removeClass('d-none');
-                $('.lv2-2>p').css('color', 'rgb(11, 141, 173)');
-            } else {
+            $('.lv2-1, .lv2-3, .lv2-4, .lv2-5').click(function() {
+                console.log('關閉居家安全 click');
                 $('.lv3-2').addClass('d-none');
-            }
+                $('.lv2-2>p').css('color', '#5a5a5a');
+            });
 
-            // 清除項目點選效果
-            $('.lv3-1, .lv3-3, .lv3-4, .lv3-5').addClass('d-none');
-            $('.lv2-1>p, .lv2-3>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
-        });
+            // tog_lv2-3 居家清潔
+            $('.lv2-3').click(function() {
+                console.log('居家安全 click');
+                if ($('.lv3-3').hasClass('d-none')) {
+                    $('.lv3-3').removeClass('d-none');
+                    $('.lv2-3>p').css('color', 'rgb(11, 141, 173)');
+                } else {
+                    $('.lv3-3').addClass('d-none');
+                }
 
-        $('.lv2-1, .lv2-3, .lv2-4, .lv2-5').click(function() {
-            console.log('關閉居家安全 click');
-            $('.lv3-2').addClass('d-none');
-            $('.lv2-2>p').css('color', '#5a5a5a');
-        });
+                // 清除項目點選效果
+                $('.lv3-1, .lv3-2, .lv3-4, .lv3-5').addClass('d-none');
+                $('.lv2-1>p, .lv2-2>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
+            });
 
-        // tog_lv2-3 居家清潔
-        $('.lv2-3').click(function() {
-            console.log('居家安全 click');
-            if ($('.lv3-3').hasClass('d-none')) {
-                $('.lv3-3').removeClass('d-none');
-                $('.lv2-3>p').css('color', 'rgb(11, 141, 173)');
-            } else {
+            $('.lv2-1, .lv2-2, .lv2-4, .lv2-5').click(function() {
+                console.log('關閉居家清潔 click');
                 $('.lv3-3').addClass('d-none');
-            }
+                $('.lv2-3>p').css('color', '#5a5a5a');
+            });
 
-            // 清除項目點選效果
-            $('.lv3-1, .lv3-2, .lv3-4, .lv3-5').addClass('d-none');
-            $('.lv2-1>p, .lv2-2>p, .lv2-4>p, .lv2-5>p').css('color', '#5a5a5a');
-        });
+            // tog_lv2-4 娛樂與教育
+            $('.lv2-4').click(function() {
+                console.log('居家安全 click');
+                if ($('.lv3-4').hasClass('d-none')) {
+                    $('.lv3-4').removeClass('d-none');
+                    $('.lv2-4>p').css('color', 'rgb(11, 141, 173)');
+                } else {
+                    $('.lv3-4').addClass('d-none');
+                }
 
-        $('.lv2-1, .lv2-2, .lv2-4, .lv2-5').click(function() {
-            console.log('關閉居家清潔 click');
-            $('.lv3-3').addClass('d-none');
-            $('.lv2-3>p').css('color', '#5a5a5a');
-        });
+                // 清除項目點選效果
+                $('.lv3-1, .lv3-2, .lv3-3, .lv3-5').addClass('d-none');
+                $('.lv2-1>p, .lv2-2>p, .lv2-3>p, .lv2-5>p').css('color', '#5a5a5a');
+            });
 
-        // tog_lv2-4 娛樂與教育
-        $('.lv2-4').click(function() {
-            console.log('居家安全 click');
-            if ($('.lv3-4').hasClass('d-none')) {
-                $('.lv3-4').removeClass('d-none');
-                $('.lv2-4>p').css('color', 'rgb(11, 141, 173)');
-            } else {
+            $('.lv2-1, .lv2-2, .lv2-3, .lv2-5').click(function() {
+                console.log('關閉娛樂與教育 click');
                 $('.lv3-4').addClass('d-none');
-            }
+                $('.lv2-4>p').css('color', '#5a5a5a');
+            });
 
-            // 清除項目點選效果
-            $('.lv3-1, .lv3-2, .lv3-3, .lv3-5').addClass('d-none');
-            $('.lv2-1>p, .lv2-2>p, .lv2-3>p, .lv2-5>p').css('color', '#5a5a5a');
-        });
+            // tog_lv2-5 智能周邊
+            $('.lv2-5').click(function() {
+                console.log('居家安全 click');
+                if ($('.lv3-5').hasClass('d-none')) {
+                    $('.lv3-5').removeClass('d-none');
+                    $('.lv2-5>p').css('color', 'rgb(11, 141, 173)');
+                } else {
+                    $('.lv3-5').addClass('d-none');
+                }
 
-        $('.lv2-1, .lv2-2, .lv2-3, .lv2-5').click(function() {
-            console.log('關閉娛樂與教育 click');
-            $('.lv3-4').addClass('d-none');
-            $('.lv2-4>p').css('color', '#5a5a5a');
-        });
+                // 清除項目點選效果
+                $('.lv3-1, .lv3-2, .lv3-3, .lv3-4').addClass('d-none');
+                $('.lv2-1>p, .lv2-2>p, .lv2-3>p, .lv2-4>p').css('color', '#5a5a5a');
+            });
 
-        // tog_lv2-5 智能周邊
-        $('.lv2-5').click(function() {
-            console.log('居家安全 click');
-            if ($('.lv3-5').hasClass('d-none')) {
-                $('.lv3-5').removeClass('d-none');
-                $('.lv2-5>p').css('color', 'rgb(11, 141, 173)');
-            } else {
+            $('.lv2-1, .lv2-2, .lv2-3, .lv2-4').click(function() {
+                console.log('智能周邊 click');
                 $('.lv3-5').addClass('d-none');
-            }
+                $('.lv2-5>p').css('color', '#5a5a5a');
+            });
 
-            // 清除項目點選效果
-            $('.lv3-1, .lv3-2, .lv3-3, .lv3-4').addClass('d-none');
-            $('.lv2-1>p, .lv2-2>p, .lv2-3>p, .lv2-4>p').css('color', '#5a5a5a');
-        });
+            // this
+            $('#select_select').change(function() {
+                if ($(this).val() == 1) {
+                    $('.credit').show();
+                    console.log(1)
 
-        $('.lv2-1, .lv2-2, .lv2-3, .lv2-4').click(function() {
-            console.log('智能周邊 click');
-            $('.lv3-5').addClass('d-none');
-            $('.lv2-5>p').css('color', '#5a5a5a');
-        });
-
-        // this
-        $('#select_select').change(function() {
-            if ($(this).val() == 1) {
-                $('.credit').show();
-                console.log(1)
-
-            } else {
-                $('.credit').hide();
-                console.log(2)
-            }
-        });
-        $('.bill_type').change(function() {
-            $('.bill_3').val('');
-            if ($(this).val() == 1) {
-                var o1 = `<option value="0">浪浪之家（85314880）</option>
+                } else {
+                    $('.credit').hide();
+                    console.log(2)
+                }
+            });
+            $('.bill_type').change(function() {
+                $('.bill_3').val('');
+                if ($(this).val() == 1) {
+                    var o1 = `<option value="0">浪浪之家（85314880）</option>
                <option value="1">11111（85314880）</option>
                <option value="2">2222（85314880）</option>
                <option value="3">3333（85314880）</option>
                <option value="4">浪4之家（85314880）</option>`;
-                $('.bill_2').html(o1).show();
-                $('.bill_3').hide();
-            } else if ($(this).val() == 0) {
-                $('.bill_2').html('').hide();
-                $('.bill_3').hide();
-            } else {
-                $('.bill_2').html('').hide();
-                $('.bill_3').show();
-            }
-        })
-        var payment_form = new DatPayment({
-            form_selector: '#payment-form',
-            card_container_selector: '.dpf-card-placeholder',
-
-            number_selector: '.dpf-input[data-type="number"]',
-            date_selector: '.dpf-input[data-type="expiry"]',
-            cvc_selector: '.dpf-input[data-type="cvc"]',
-            name_selector: '.dpf-input[data-type="name"]',
-
-            submit_button_selector: '.dpf-submit',
-
-            placeholders: {
-                number: '•••• •••• •••• ••••',
-                expiry: '••/••',
-                cvc: '•••',
-                name: 'SOPHIA'
-            },
-
-            validators: {
-                number: function(number) {
-                    return Stripe.card.validateCardNumber(number);
-                },
-                expiry: function(expiry) {
-                    var expiry = expiry.split(' / ');
-                    return Stripe.card.validateExpiry(expiry[0] || 0, expiry[1] || 0);
-                },
-                cvc: function(cvc) {
-                    return Stripe.card.validateCVC(cvc);
-                },
-                name: function(value) {
-                    return value.length > 0;
+                    $('.bill_2').html(o1).show();
+                    $('.bill_3').hide();
+                } else if ($(this).val() == 0) {
+                    $('.bill_2').html('').hide();
+                    $('.bill_3').hide();
+                } else {
+                    $('.bill_2').html('').hide();
+                    $('.bill_3').show();
                 }
-            }
-        });
 
-        var demo_log_div = document.getElementById("demo-log");
+            })
+            $(function() {
+                $('#credit').card({
+                    // a selector or DOM element for the container
+                    // where you want the card to appear
+                    container: '.card-wrapper', // *required*
 
-        payment_form.form.addEventListener('payment_form:submit', function(e) {
-            var form_data = e.detail;
-            payment_form.unlockForm();
-            demo_log_div.innerHTML += "<br>" + JSON.stringify(form_data);
-        });
-
-        payment_form.form.addEventListener('payment_form:field_validation_success', function(e) {
-            var input = e.detail;
-
-            demo_log_div.innerHTML += "<br>field_validation_success:" + input.getAttribute("data-type");
-
-        });
-
-        payment_form.form.addEventListener('payment_form:field_validation_failed', function(e) {
-            var input = e.detail;
-
-            demo_log_div.innerHTML += "<br>field_validation_failed:" + input.getAttribute("data-type");
-        });
-
-        // NUMBER              BRAND
-        // _____________________________________
-
-        // 4242424242424242	Visa
-        // 5555555555554444	Mastercard
-        // 378282246310005     American Express
-        // 6011111111111117	Discover
-    </script>
+                    // all of the other options from above
+                });
+            })
+        </script>
 
 </body>
+<script src="jquery.card.js"></script>
 
 </html>

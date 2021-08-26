@@ -47,14 +47,9 @@ li {
   margin: 50px 0 0 30px;
 }
 
-/* .main h4::after{
-    content:'';
-    display:block;
-    width:180px;
-    height:3px;
-    background:#000;
-    margin-top:10px;
-} */
+.card_title {
+  height: 50px;
+}
 
 .card1 {
   width: 300px;
@@ -173,7 +168,6 @@ li {
     border-radius: 10px;
   }
   .card1 {
-    height: 390px;
     margin: 10px auto;
   }
   .card_title {

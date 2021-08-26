@@ -1,6 +1,34 @@
 <?php require_once 'db.inc.php' ?>
 <?php session_start() ?>
+<?php
+if (!isset($_SESSION['shopping_cart'])) {
+    header("Location: shopping_cart.php");
+    exit();
+}
 
+//如果購物車與商品索引與數量同時存在，則修改指定索引的商品數量
+// if (isset($_POST['index']) && isset($_POST['qty'])) {
+//     foreach ($_POST['index'] as $index => $value) {
+//         $_SESSION['cart'][$index]['prod_qty'] = $_POST['qty'][$index];
+//     }
+// }
+$_SESSION['itemInfo'] = [];
+foreach ($_POST['itemName'] as $index => $item) {
+    $_SESSION['itemInfo'][$index]['itemImg'] = $_POST['itemImg'][$index];
+    $_SESSION['itemInfo'][$index]['itemBrand'] = $_POST['itemBrand'][$index];
+    $_SESSION['itemInfo'][$index]['itemName'] = $_POST['itemName'][$index];
+    $_SESSION['itemInfo'][$index]['itemPrice'] = $_POST['itemPrice'][$index];
+    $_SESSION['itemInfo'][$index]['itemQty'] = $_POST['itemQty'][$index];
+}
+
+//將商品小計|運費|總計存入session
+$_SESSION['feeInfo'] = [];
+$_SESSION['feeInfo']['amount'] = $_POST['amount'];
+$_SESSION['feeInfo']['logistic_fee'] = $_POST['logistic_fee'];
+$_SESSION['feeInfo']['total_amount'] = $_POST['total_amount'];
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -433,66 +461,64 @@
                 </div>
 
             </div>
-            <div class="info">
-                <h5>宅配資訊</h5>
-                <div class="info_card">
-                    <!-- <label for="member">
-                        <input type="checkbox" id="member">同會員資料
-                    </label> -->
+            <form name="myForm" method="post" action="payment.php">
+                <div class="info">
+                    <h5>宅配資訊</h5>
+                    <div class="info_card">
+                        <label for="member">
+                            <input type="checkbox" id="member">填入會員資料
+                        </label>
 
-                    <div class="group">
-                        <h6>收件人姓名</h6>
-                        <input type="text">
-                    </div>
-
-                    <div class="group">
-                        <h6>收件人手機</h6>
-                        <input type="text" class="b_style">
-                    </div>
-
-                    <div class="group">
-
-                        <div class="select_tri">
-                            <select name="" id="logistics">
-                                <option value="0">宅配地方</option>
-                                <option value="1">台灣</option>
-                                <option value="2">外島</option>
-                            </select>
-                            <div class="tri"></div>
+                        <div class="group">
+                            <h6>收件人姓名</h6>
+                            <input type="text" name="recipient_name">
                         </div>
-                        <!-- <select name="" id="" class="b_style">
-                            <option value="0">台灣</option>
-                        </select> -->
-                    </div>
 
-                    <div class="group">
-                        <h6>地址</h4>
-                            <input type="text">
-                    </div>
+                        <div class="group">
+                            <h6>收件人手機</h6>
+                            <input type="text" class="b_style" name="recipient_phone_number">
+                        </div>
 
-                    <div class="group">
-                        <h6>郵遞區號</h6>
-                        <input type="text" class="b_style">
-                    </div>
+                        <div class="group">
 
-                    <div class="group">
-                        <h6>備註</h6>
-                        <textarea></textarea>
-                    </div>
+                            <div class="select_tri">
+                                <select name="transport_type" id="logistics">
+                                    <option value="0">宅配地方</option>
+                                    <option value="1">台灣</option>
+                                    <option value="2">外島</option>
+                                </select>
+                                <div class="tri"></div>
+                            </div>
+                        </div>
 
+                        <div class="group">
+                            <h6>地址</h4>
+                                <input type="text" name="recipient_address">
+                        </div>
+
+                        <div class="group">
+                            <h6>郵遞區號</h6>
+                            <input type="text" class="b_style" name="recipient_address_no">
+                        </div>
+
+                        <div class="group">
+                            <h6>備註</h6>
+                            <textarea name="recipient_comments"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="l_part">
+                        <a href="shopping_cart.php" class="back">上一頁</a>
+                        <button class="next" type="submit">下一步</button>
+                    </div>
                 </div>
-                <div class="l_part">
-                    <button class="back">上一頁</button>
-                    <button class="next">下一步</button>
-                </div>
-            </div>
-
-
-
+            </form>
 
         </div>
 
     </div>
+
+
 
     <!-- FT : Footer ----------------------------------------------->
 

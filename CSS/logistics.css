@@ -52,7 +52,8 @@ body {
   padding-left: 20px;
 }
 option,
-select {
+select,
+button {
   outline: none;
   cursor: pointer;
 }
@@ -130,8 +131,9 @@ input[type="checkbox"] {
 textarea {
   width: 80%;
   height: 50px;
+  outline: none;
 }
-.back {
+.l_part a {
   background-color: #e8e8e8;
   width: 150px;
   height: 50px;
@@ -139,7 +141,14 @@ textarea {
   border: 0px;
   color: gray;
   box-shadow: 2px 4px 7px #9d9d9d;
+  text-align: center;
+  line-height: 50px;
 }
+.l_part a:hover {
+  color: gray;
+  text-decoration: none;
+}
+
 .next {
   background-color: #fa8873;
   box-shadow: 2px 4px 7px #9d9d9d;
@@ -149,6 +158,7 @@ textarea {
   border: 0px;
   color: white;
   margin-left: 20px;
+  cursor: pointer;
 }
 
 /* rwd */

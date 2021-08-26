@@ -5,6 +5,7 @@ $(function () {
     let input_pwd = $('input#pwd');
     let input_check = $('input#check_pwd');
     let input_phone_number = $('input#phone_number');
+    let hasCoupon = false;
 
     count_total();
 
@@ -254,7 +255,26 @@ $(function () {
             item_total =  Number($(this).find('.single_price').text().replace('NT$',''))*Number($(this).find('.item_price').val());
             total +=item_total;
         });
-        $('.total').text(`NT$ ${total}`);
+        
+        if(hasCoupon){
+            $('.logistic_fee').text('0');
+            $('.logistic_fee_val').val('0');
+        }else{
+            if(total>10000){
+                $('.logistic_fee').text('0');
+                $('.logistic_fee_val').val('0');
+            }else{
+                $('.logistic_fee').text('60');
+                $('.logistic_fee_val').val('60');
+            }
+        }
+      
+
+        $('.subtotal p, .total').text(`NT$ ${total}`);
+        $('.amount_val').val(total);
+
+        $('.total_amount').text(`NT$ ${Number($('.logistic_fee').text()) + total}`);
+        $('.total_amount_val').val(total +Number($('.logistic_fee_val').val()));
     }
     
         
@@ -387,11 +407,32 @@ $('button.saved').click(function(event){
     
     });
 
-    //點擊購物車內的品牌
-    // $('.brand_check').click(function(){
-    //     $('.list').hide();
-    //     $(`.list[data-brand_id=${$(this).val()}]`).show();
-    // });
+  //確認優惠代碼是否可以使用
+  $('a#check_coupon_code').click(function (event) {
+    //避免元素的預設事件被觸發
+    event.preventDefault();
+
+    //取得優惠代碼
+    let code = $('input[name="coupon_code"]').val();
+
+    //如果代碼為空，就不往下執行
+    if (code == '') {
+        alert('請輸入優惠代碼');
+        return false;
+    }
+
+    $.post("checkCoupon.php", { code: code }, function (obj) {
+        if (obj['success']) {
+            alert(`${obj['info']}`);
+            $('.logistic_fee').text('0');
+            $('.coupon_div').hide();
+            hasCoupon = true;
+            count_total();
+        } else {
+            alert(`${obj['info']}`);
+        }
+    }, 'json');
+});
 
 });
 

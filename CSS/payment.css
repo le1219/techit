@@ -55,6 +55,10 @@ select:focus {
   display: flex;
   justify-content: flex-start;
 }
+.product_info img {
+  width: 150px;
+  height: 150px;
+}
 .product_list h4 {
   text-align: right;
 }
@@ -186,6 +190,9 @@ form input[type="text"] {
 }
 .jp-card-back {
   background: linear-gradient(45deg, #a4a0cc, #f7cdcd) !important;
+}
+#credit input {
+  margin: 10px;
 }
 /* rwd */
 @media screen and (max-width: 500px) {
